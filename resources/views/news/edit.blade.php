@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <form method="POST" action="{{ route('news.update', $news->id) }}">
+                    <form method="POST" action="{{ route('news.update', $news->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -87,6 +87,30 @@
                                       required
                                       class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">{{ old('content', $news->content) }}</textarea>
                             @error('content')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- 画像 -->
+                        <div class="mb-6">
+                            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                                画像（任意）
+                            </label>
+                            @if($news->image_path)
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/' . $news->image_path) }}" 
+                                         alt="現在の画像" 
+                                         class="max-w-md h-auto rounded-lg border border-gray-300">
+                                    <p class="mt-1 text-xs text-gray-500">現在の画像</p>
+                                </div>
+                            @endif
+                            <input type="file" 
+                                   id="image" 
+                                   name="image" 
+                                   accept="image/*"
+                                   class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 @error('image') border-red-500 @enderror">
+                            <p class="mt-1 text-xs text-gray-500">対応形式: JPG, PNG, GIF（最大5MB）</p>
+                            @error('image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

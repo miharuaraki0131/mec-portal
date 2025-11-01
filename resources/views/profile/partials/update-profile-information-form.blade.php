@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -45,6 +45,41 @@
                     @endif
                 </div>
             @endif
+        </div>
+
+        <!-- プロフィール画像 -->
+        <div>
+            <x-input-label for="profile_image" :value="__('プロフィール画像')" />
+            @if($user->profile_image_path)
+                <div class="mt-2 mb-2">
+                    <img src="{{ asset('storage/' . $user->profile_image_path) }}" 
+                         alt="プロフィール画像" 
+                         class="w-24 h-24 rounded-full object-cover border border-gray-300">
+                </div>
+            @endif
+            <input type="file" 
+                   id="profile_image" 
+                   name="profile_image" 
+                   accept="image/*"
+                   class="mt-1 block w-full text-sm text-gray-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-lg file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-indigo-50 file:text-indigo-700
+                          hover:file:bg-indigo-100">
+            <p class="mt-1 text-xs text-gray-500">対応形式: JPG, PNG, GIF（最大5MB）</p>
+            <x-input-error class="mt-2" :messages="$errors->get('profile_image')" />
+        </div>
+
+        <!-- 自己紹介 -->
+        <div>
+            <x-input-label for="self_introduction" :value="__('自己紹介・備考')" />
+            <textarea id="self_introduction" 
+                      name="self_introduction" 
+                      rows="5"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('self_introduction', $user->self_introduction) }}</textarea>
+            <p class="mt-1 text-xs text-gray-500">1000文字以内で自己紹介や備考を入力できます。</p>
+            <x-input-error class="mt-2" :messages="$errors->get('self_introduction')" />
         </div>
 
         <div class="flex items-center gap-4">

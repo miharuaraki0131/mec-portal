@@ -28,7 +28,14 @@
                             <a href="{{ route('news.show', $item->id) }}" 
                                class="block hover:bg-gray-50 transition-colors">
                                 <div class="p-6">
-                                    <div class="flex items-start justify-between">
+                                    <div class="flex items-start gap-4">
+                                        @if($item->image_path)
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('storage/' . $item->image_path) }}" 
+                                                     alt="{{ $item->title }}" 
+                                                     class="w-24 h-24 object-cover rounded-lg border border-gray-300">
+                                            </div>
+                                        @endif
                                         <div class="flex-1">
                                             <div class="flex items-center gap-3 mb-2">
                                                 @if($item->priority === 1)

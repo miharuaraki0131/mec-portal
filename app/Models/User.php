@@ -25,6 +25,8 @@ class User extends Authenticatable
         'role',
         'delete_flg',
         'division_id',
+        'self_introduction',
+        'profile_image_path',
     ];
 
     /**

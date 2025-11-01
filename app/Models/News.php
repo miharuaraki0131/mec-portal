@@ -18,6 +18,7 @@ class News extends Model
         'posted_by',
         'published_at',
         'view_count',
+        'image_path',
     ];
 
     protected $casts = [

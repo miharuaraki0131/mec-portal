@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -45,10 +46,20 @@ class NewsController extends Controller
             'category' => ['nullable', 'string', 'max:100'],
             'priority' => ['nullable', 'integer', 'in:0,1'],
             'published_at' => ['nullable', 'date'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'], // 5MB
         ]);
+
+        // 画像のアップロード
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $imagePath = $file->storeAs('news', $fileName, 'public');
+        }
 
         $validated['posted_by'] = Auth::id();
         $validated['published_at'] = $validated['published_at'] ?? now();
+        $validated['image_path'] = $imagePath;
 
         News::create($validated);
 
@@ -89,7 +100,20 @@ class NewsController extends Controller
             'category' => ['nullable', 'string', 'max:100'],
             'priority' => ['nullable', 'integer', 'in:0,1'],
             'published_at' => ['nullable', 'date'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'], // 5MB
         ]);
+
+        // 画像の更新
+        if ($request->hasFile('image')) {
+            // 古い画像を削除
+            if ($news->image_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($news->image_path);
+            }
+            
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $validated['image_path'] = $file->storeAs('news', $fileName, 'public');
+        }
 
         $news->update($validated);
 
@@ -103,6 +127,11 @@ class NewsController extends Controller
     public function destroy(News $news)
     {
         $this->authorize('delete', $news);
+
+        // 画像を削除
+        if ($news->image_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($news->image_path);
+        }
 
         $news->delete();
 

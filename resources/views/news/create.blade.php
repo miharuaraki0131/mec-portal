@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <form method="POST" action="{{ route('news.store') }}">
+                    <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <!-- タイトル -->
@@ -89,6 +89,22 @@
                                       class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                       placeholder="お知らせの内容を入力">{{ old('content') }}</textarea>
                             @error('content')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- 画像 -->
+                        <div class="mb-6">
+                            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                                画像（任意）
+                            </label>
+                            <input type="file" 
+                                   id="image" 
+                                   name="image" 
+                                   accept="image/*"
+                                   class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 @error('image') border-red-500 @enderror">
+                            <p class="mt-1 text-xs text-gray-500">対応形式: JPG, PNG, GIF（最大5MB）</p>
+                            @error('image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

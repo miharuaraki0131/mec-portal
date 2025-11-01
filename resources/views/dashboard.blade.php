@@ -149,21 +149,31 @@
                             @foreach($latestNews as $news)
                                 <a href="{{ route('news.show', $news->id) }}" class="block py-3 hover:bg-gray-50 transition-colors">
                                     <div class="flex items-start gap-3">
-                                        @if($news->priority === 1)
-                                            <span class="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded flex-shrink-0">
-                                                重要
-                                            </span>
+                                        @if($news->image_path)
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('storage/' . $news->image_path) }}" 
+                                                     alt="{{ $news->title }}" 
+                                                     class="w-16 h-16 object-cover rounded border border-gray-300">
+                                            </div>
                                         @endif
                                         <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                @if($news->priority === 1)
+                                                    <span class="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded">
+                                                        重要
+                                                    </span>
+                                                @endif
+                                                @if($news->category)
+                                                    <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                                                        {{ $news->category }}
+                                                    </span>
+                                                @endif
+                                            </div>
                                             <h4 class="text-sm font-medium text-gray-900 truncate">
                                                 {{ $news->title }}
                                             </h4>
                                             <div class="flex items-center gap-2 mt-1 text-xs text-gray-500">
                                                 <span>{{ $news->published_at ? $news->published_at->format('Y/m/d') : '' }}</span>
-                                                @if($news->category)
-                                                    <span>•</span>
-                                                    <span>{{ $news->category }}</span>
-                                                @endif
                                             </div>
                                         </div>
                                     </div>

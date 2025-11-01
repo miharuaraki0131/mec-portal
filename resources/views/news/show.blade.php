@@ -41,6 +41,15 @@
                         <span>閲覧数: {{ $news->view_count }}</span>
                     </div>
 
+                    <!-- 画像 -->
+                    @if($news->image_path)
+                        <div class="mb-6">
+                            <img src="{{ asset('storage/' . $news->image_path) }}" 
+                                 alt="{{ $news->title }}" 
+                                 class="w-full max-w-3xl mx-auto rounded-lg shadow-md">
+                        </div>
+                    @endif
+
                     <!-- 本文 -->
                     <div class="prose max-w-none mb-6">
                         <div class="text-gray-700 whitespace-pre-wrap">

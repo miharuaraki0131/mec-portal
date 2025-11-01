@@ -67,17 +67,24 @@
                                 </span>
                             </h3>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($users as $user)
                                     <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                                         <div class="flex items-start gap-3">
-                                            <div class="flex-shrink-0 w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                                                <span class="text-indigo-600 font-semibold text-lg">
-                                                    {{ mb_substr($user->name, 0, 1) }}
-                                                </span>
-                                            </div>
+                                            <!-- プロフィール画像 -->
+                                            @if($user->profile_image_path)
+                                                <img src="{{ asset('storage/' . $user->profile_image_path) }}" 
+                                                     alt="{{ $user->name }}" 
+                                                     class="flex-shrink-0 w-16 h-16 rounded-full object-cover border border-gray-300">
+                                            @else
+                                                <div class="flex-shrink-0 w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center">
+                                                    <span class="text-indigo-600 font-semibold text-xl">
+                                                        {{ mb_substr($user->name, 0, 1) }}
+                                                    </span>
+                                                </div>
+                                            @endif
                                             <div class="flex-1 min-w-0">
-                                                <h4 class="text-sm font-semibold text-gray-900 truncate">
+                                                <h4 class="text-base font-semibold text-gray-900">
                                                     {{ $user->name }}
                                                 </h4>
                                                 <p class="text-xs text-gray-500 mt-1">
@@ -96,6 +103,14 @@
                                                     <span class="inline-block mt-1 px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded">
                                                         マネージャー
                                                     </span>
+                                                @endif
+                                                <!-- 自己紹介 -->
+                                                @if($user->self_introduction)
+                                                    <div class="mt-3 pt-3 border-t border-gray-200">
+                                                        <p class="text-sm text-gray-700">
+                                                            {{ trim($user->self_introduction) }}
+                                                        </p>
+                                                    </div>
                                                 @endif
                                             </div>
                                         </div>
