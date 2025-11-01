@@ -6,7 +6,9 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <div class="flex items-center gap-3 mt-1">
+                            <img src="{{ asset('favicons/favicon.ico') }}" alt="会社のロゴ" class="h-10 w-auto">
+                        </div>
                     </a>
                 </div>
 
@@ -15,6 +17,46 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                </div>
+
+                <!-- External Links -->
+                <div class="hidden md:flex items-center space-x-3 sm:ms-6 border-l border-gray-200 pl-6">
+                    <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="Gmail">
+                        Gmail
+                    </a>
+                    <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="ドライブ">
+                        ドライブ
+                    </a>
+                    <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="Meet">
+                        Meet
+                    </a>
+                    <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="カレンダー">
+                        カレンダー
+                    </a>
+                    <a href="https://www.chatwork.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="チャットワーク">
+                        チャットワーク
+                    </a>
+                    <a href="https://zoom.us" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="Zoom">
+                        Zoom
+                    </a>
+                    <a href="https://atnd-awj.ak4.jp/ja/login?next=%2Fja%2Fmypage%2Fpunch" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="AKASHI">
+                        AKASHI（勤怠）
+                    </a>
+                    <a href="https://s-paycial.shinwart.com/nmec/Login/Index" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="SS-PAYCIAL">
+                        S-PAYCIAL（給与）
+                    </a>
+                    <a href="https://x.com/nipponmechatron" target="_blank" rel="noopener noreferrer" 
+                       class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="X">
+                        X
+                    </a>
                 </div>
             </div>
 
@@ -70,6 +112,22 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+        </div>
+
+        <!-- External Links (Mobile) -->
+        <div class="pt-2 pb-3 border-t border-gray-200">
+            <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">外部リンク</div>
+            <div class="px-4 py-2 grid grid-cols-3 gap-2">
+                <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">Gmail</a>
+                <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">ドライブ</a>
+                <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">Meet</a>
+                <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">カレンダー</a>
+                <a href="https://www.chatwork.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">チャットワーク</a>
+                <a href="https://zoom.us" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">Zoom</a>
+                <a href="https://akashi.midworks.net" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">AKASHI</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">SS-PAYCIAL</a>
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">X</a>
+            </div>
         </div>
 
         <!-- Responsive Settings Options -->

@@ -18,9 +18,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'user_code',
         'name',
         'email',
         'password',
+        'role',
+        'delete_flg',
+        'division_id',
     ];
 
     /**
@@ -44,5 +48,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * 所属部署とのリレーション
+     */
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
     }
 }

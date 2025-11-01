@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('file_path')->comment('S3パスまたはローカルパス');
             $table->string('file_type', 50)->comment('拡張子（PDF, XLSX, DOCXなど）');
             $table->string('category', 100)->nullable()->comment('分類');
+            $table->foreignId('division_id')->nullable()->constrained('divisions')->onDelete('set null')->comment('部署ID（nullの場合は全般）');
             $table->foreignId('uploaded_by')->constrained('users')->onDelete('cascade')->comment('アップロード者ID');
             $table->integer('view_count')->default(0)->comment('閲覧回数');
             $table->timestamps();
@@ -24,6 +25,7 @@ return new class extends Migration
             // インデックス追加
             $table->index('category');
             $table->index('file_type');
+            $table->index('division_id');
         });
     }
 
