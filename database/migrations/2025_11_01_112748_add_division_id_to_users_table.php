@@ -12,9 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('division_id')->nullable()->after('role')->constrained('divisions')->onDelete('set null')->comment('所属部署ID（主所属、null可）');
+            $table->unsignedBigInteger('division_id')->nullable()->after('role')->comment('所属部署ID（主所属、null可）');
             $table->index('division_id');
         });
+        
+        // divisionsテーブルが存在する場合のみ外部キー制約を追加
+        if (Schema::hasTable('divisions')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->foreign('division_id')->references('id')->on('divisions')->onDelete('set null');
+            });
+        }
     }
 
     /**
