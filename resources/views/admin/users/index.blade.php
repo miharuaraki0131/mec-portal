@@ -6,11 +6,11 @@
             </h2>
             <div class="flex gap-3">
                 <a href="{{ route('admin.masters.index') }}" 
-                   class="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                   class="text-gray-600 hover:text-gray-900 text-base font-medium">
                     ← マスタ管理に戻る
                 </a>
                 <a href="{{ route('admin.users.create') }}" 
-                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                     新規登録
                 </a>
             </div>
@@ -36,17 +36,17 @@
                 <div class="p-4">
                     <form method="GET" action="{{ route('admin.users.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">検索</label>
+                            <label class="block text-base font-medium text-gray-700 mb-1">検索</label>
                             <input type="text" 
                                    name="search" 
                                    value="{{ request('search') }}"
                                    placeholder="名前、コード、メール"
-                                   class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 text-sm">
+                                   class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 text-base">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">部署</label>
+                            <label class="block text-base font-medium text-gray-700 mb-1">部署</label>
                             <select name="division_id" 
-                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 text-sm">
+                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 text-base">
                                 <option value="">すべて</option>
                                 @foreach($divisions as $parent)
                                     @if($parent->children->count() > 0)
@@ -66,9 +66,9 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">ロール</label>
+                            <label class="block text-base font-medium text-gray-700 mb-1">ロール</label>
                             <select name="role" 
-                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 text-sm">
+                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 text-base">
                                 <option value="">すべて</option>
                                 <option value="0" {{ request('role') === '0' ? 'selected' : '' }}>一般ユーザー</option>
                                 <option value="1" {{ request('role') === '1' ? 'selected' : '' }}>管理者</option>
@@ -102,19 +102,19 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach($users as $user)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $user->user_code }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $user->name }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $user->email }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $user->division ? $user->division->full_name : '未所属' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base">
                                             @if($user->role === 1)
                                                 <span class="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded">管理者</span>
                                             @elseif($user->role === 2)
@@ -123,7 +123,7 @@
                                                 <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2 py-1 rounded">一般ユーザー</span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-base font-medium">
                                             <div class="flex justify-end gap-2">
                                                 <a href="{{ route('admin.users.edit', $user->id) }}" 
                                                    class="text-indigo-600 hover:text-indigo-900">編集</a>

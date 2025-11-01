@@ -20,7 +20,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">ユーザー管理</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">ユーザーの登録・編集・削除</p>
+                        <p class="text-gray-600 text-base">ユーザーの登録・編集・削除</p>
                     </div>
                 </a>
 
@@ -35,7 +35,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">部署管理</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">部署の登録・編集・削除・階層管理</p>
+                        <p class="text-gray-600 text-base">部署の登録・編集・削除・階層管理</p>
                     </div>
                 </a>
 
@@ -50,7 +50,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">お知らせ管理</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">お知らせの投稿・編集・削除</p>
+                        <p class="text-gray-600 text-base">お知らせの投稿・編集・削除</p>
                     </div>
                 </a>
 
@@ -65,7 +65,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">資料管理</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">資料のアップロード・編集・削除</p>
+                        <p class="text-gray-600 text-base">資料のアップロード・編集・削除</p>
                     </div>
                 </a>
 
@@ -80,7 +80,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">FAQ管理</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">FAQの登録・編集・削除</p>
+                        <p class="text-gray-600 text-base">FAQの登録・編集・削除</p>
                     </div>
                 </a>
             </div>

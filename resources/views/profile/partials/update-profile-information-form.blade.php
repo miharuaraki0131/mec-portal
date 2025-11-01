@@ -4,7 +4,7 @@
             {{ __('プロフィール情報') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-base text-gray-600">
             {{ __('アカウントのプロフィール情報とメールアドレスを更新します。') }}
         </p>
     </header>
@@ -30,16 +30,16 @@
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-gray-800">
+                    <p class="text-base mt-2 text-gray-800">
                         {{ __('メールアドレスが認証されていません。') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button form="send-verification" class="underline text-base text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             {{ __('認証メールを再送信する') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
+                        <p class="mt-2 font-medium text-base text-green-600">
                             {{ __('認証リンクをメールアドレスに送信しました。') }}
                         </p>
                     @endif
@@ -61,10 +61,10 @@
                    id="profile_image" 
                    name="profile_image" 
                    accept="image/*"
-                   class="mt-1 block w-full text-sm text-gray-500
+                   class="mt-1 block w-full text-base text-gray-500
                           file:mr-4 file:py-2 file:px-4
                           file:rounded-lg file:border-0
-                          file:text-sm file:font-semibold
+                          file:text-base file:font-semibold
                           file:bg-indigo-50 file:text-indigo-700
                           hover:file:bg-indigo-100">
             <p class="mt-1 text-xs text-gray-500">対応形式: JPG, PNG, GIF（最大5MB）</p>
@@ -91,7 +91,7 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
+                    class="text-base text-gray-600"
                 >{{ __('保存しました。') }}</p>
             @endif
         </div>

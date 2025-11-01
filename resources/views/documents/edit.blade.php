@@ -15,7 +15,7 @@
 
                         <!-- タイトル -->
                         <div class="mb-6">
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="title" class="block text-base font-medium text-gray-700 mb-2">
                                 資料タイトル <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -25,17 +25,17 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
                             @error('title')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 現在のファイル -->
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-base font-medium text-gray-700 mb-2">
                                 現在のファイル
                             </label>
                             <div class="bg-gray-50 p-3 rounded-lg">
-                                <p class="text-sm text-gray-700">
+                                <p class="text-base text-gray-700">
                                     {{ $document->title }}.{{ $document->file_type }}
                                 </p>
                             </div>
@@ -43,7 +43,7 @@
 
                         <!-- ファイル（変更時のみ） -->
                         <div class="mb-6">
-                            <label for="file" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="file" class="block text-base font-medium text-gray-700 mb-2">
                                 ファイル（変更する場合のみ選択）
                             </label>
                             <input type="file" 
@@ -53,13 +53,13 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
                             <p class="mt-1 text-xs text-gray-500">対応形式: PDF, Excel, Word, PowerPoint（最大10MB）</p>
                             @error('file')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 部署 -->
                         <div class="mb-6">
-                            <label for="division_id" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="division_id" class="block text-base font-medium text-gray-700 mb-2">
                                 部署
                             </label>
                             <select id="division_id" 
@@ -86,13 +86,13 @@
                                 @endforeach
                             </select>
                             @error('division_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- カテゴリ -->
                         <div class="mb-6">
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="category" class="block text-base font-medium text-gray-700 mb-2">
                                 カテゴリ
                             </label>
                             <input type="text" 
@@ -101,7 +101,7 @@
                                    value="{{ old('category', $document->category) }}"
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
                             @error('category')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

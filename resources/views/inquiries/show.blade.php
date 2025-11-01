@@ -5,7 +5,7 @@
                 {{ __('問い合わせ詳細') }}
             </h2>
             <a href="{{ route('inquiries.index') }}" 
-               class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+               class="text-indigo-600 hover:text-indigo-800 text-base font-medium">
                 ← 一覧に戻る
             </a>
         </div>
@@ -60,7 +60,7 @@
                             </h3>
 
                             <!-- メタ情報 -->
-                            <div class="flex items-center gap-4 text-sm text-gray-500 mb-4 pb-4 border-b">
+                            <div class="flex items-center gap-4 text-base text-gray-500 mb-4 pb-4 border-b">
                                 <span>送信者: {{ $message->user->name ?? '不明' }}</span>
                                 <span>送信日: {{ $message->created_at->format('Y年m月d日 H:i') }}</span>
                                 @if($message->replied_by)
@@ -81,7 +81,7 @@
                                 <div class="flex gap-3 pt-4 border-t">
                                     @can('update', $message)
                                         <a href="{{ route('inquiries.edit', $message->id) }}" 
-                                           class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                           class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                             編集
                                         </a>
                                     @endcan
@@ -91,7 +91,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
-                                                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                                 削除
                                             </button>
                                         </form>
@@ -112,7 +112,7 @@
                             @csrf
 
                             <div class="mb-4">
-                                <label for="reply_message" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="reply_message" class="block text-base font-medium text-gray-700 mb-1">
                                     返信メッセージ <span class="text-red-500">*</span>
                                 </label>
                                 <textarea id="reply_message" 
@@ -121,7 +121,7 @@
                                           required
                                           class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
                                 @error('message')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 

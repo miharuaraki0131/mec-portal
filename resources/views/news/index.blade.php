@@ -6,7 +6,7 @@
             </h2>
             @can('create', App\Models\News::class)
                 <a href="{{ route('news.create') }}" 
-                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                     新規投稿
                 </a>
             @endcan
@@ -52,7 +52,7 @@
                                             <h3 class="text-lg font-semibold text-gray-900 mb-2">
                                                 {{ $item->title }}
                                             </h3>
-                                            <p class="text-gray-600 text-sm line-clamp-2 mb-3">
+                                            <p class="text-gray-600 text-base line-clamp-2 mb-3">
                                                 {{ Str::limit(strip_tags($item->content), 100) }}
                                             </p>
                                             <div class="flex items-center gap-4 text-xs text-gray-500">

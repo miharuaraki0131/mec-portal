@@ -45,33 +45,33 @@
                         <div class="space-y-6">
                             <!-- メールアドレス -->
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                                <label for="email" class="block text-base font-medium text-gray-700">メールアドレス</label>
                                 <div class="mt-1">
                                     <input id="email" name="email" type="email" placeholder="メールアドレスを入力"
                                         class="form-input w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
                                         value="{{ old('email', $request->email) }}" required autofocus autocomplete="username" />
                                 </div>
                                 @error('email')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-2 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- パスワード -->
                             <div>
-                                <label for="password" class="block text-sm font-medium text-gray-700">新しいパスワード</label>
+                                <label for="password" class="block text-base font-medium text-gray-700">新しいパスワード</label>
                                 <div class="mt-1">
                                     <input id="password" name="password" type="password" placeholder="新しいパスワードを入力"
                                         class="form-input w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
                                         required autocomplete="new-password" />
                                 </div>
                                 @error('password')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-2 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- パスワード確認 -->
                             <div>
-                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">パスワード確認</label>
+                                <label for="password_confirmation" class="block text-base font-medium text-gray-700">パスワード確認</label>
                                 <div class="mt-1">
                                     <input id="password_confirmation" name="password_confirmation" type="password"
                                         placeholder="パスワードを再度入力"
@@ -79,14 +79,14 @@
                                         required autocomplete="new-password" />
                                 </div>
                                 @error('password_confirmation')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-2 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- 送信ボタン -->
                             <div>
                                 <button type="submit"
-                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                                     パスワードをリセット
                                 </button>
                             </div>
@@ -94,7 +94,7 @@
                             <!-- ログインに戻るリンク -->
                             <div class="text-center">
                                 <a href="{{ route('login') }}"
-                                    class="text-sm text-indigo-600 hover:text-indigo-500 hover:underline">
+                                    class="text-base text-indigo-600 hover:text-indigo-500 hover:underline">
                                     ログインに戻る
                                 </a>
                             </div>

@@ -5,7 +5,7 @@
                 {{ __('FAQ詳細') }}
             </h2>
             <a href="{{ route('faqs.index') }}" 
-               class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+               class="text-indigo-600 hover:text-indigo-800 text-base font-medium">
                 ← 一覧に戻る
             </a>
         </div>
@@ -39,7 +39,7 @@
                     </div>
 
                     <!-- 統計情報 -->
-                    <div class="flex items-center gap-6 text-sm text-gray-500 mb-6">
+                    <div class="flex items-center gap-6 text-base text-gray-500 mb-6">
                         <span>閲覧数: {{ $faq->view_count }}</span>
                         <span>役に立った: {{ $faq->helpful_count }}</span>
                     </div>
@@ -60,7 +60,7 @@
                     @can('update', $faq)
                         <div class="flex gap-3 pt-4 border-t">
                             <a href="{{ route('faqs.edit', $faq->id) }}" 
-                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                 編集
                             </a>
                             <form method="POST" action="{{ route('faqs.destroy', $faq->id) }}" 
@@ -68,7 +68,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
-                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                     削除
                                 </button>
                             </form>

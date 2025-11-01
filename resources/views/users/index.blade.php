@@ -12,7 +12,7 @@
                 <div class="p-4">
                     <form method="GET" action="{{ route('users.index') }}" class="flex flex-wrap gap-4">
                         <div class="flex-1 min-w-[200px]">
-                            <label for="division_id" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="division_id" class="block text-base font-medium text-gray-700 mb-1">
                                 部署で絞り込み
                             </label>
                             <select name="division_id" 
@@ -62,7 +62,7 @@
                         <div class="p-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b-2 border-indigo-500">
                                 {{ $divisionName }}
-                                <span class="text-sm font-normal text-gray-500 ml-2">
+                                <span class="text-base font-normal text-gray-500 ml-2">
                                     ({{ $users->count() }}名)
                                 </span>
                             </h3>
@@ -107,7 +107,7 @@
                                                 <!-- 自己紹介 -->
                                                 @if($user->self_introduction)
                                                     <div class="mt-3 pt-3 border-t border-gray-200">
-                                                        <p class="text-sm text-gray-700">
+                                                        <p class="text-base text-gray-700">
                                                             {{ trim($user->self_introduction) }}
                                                         </p>
                                                     </div>

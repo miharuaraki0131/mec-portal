@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApprovalRequest;
 use App\Models\WorkflowApproval;
 use App\Models\Expense;
 use App\Models\TravelRequest;
@@ -11,6 +12,7 @@ use App\Mail\ApprovalNotification;
 use App\Mail\RejectionNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ApprovalController extends Controller
@@ -68,7 +70,7 @@ class ApprovalController extends Controller
     /**
      * 承認
      */
-    public function approve(Request $request, WorkflowApproval $approval)
+    public function approve(ApprovalRequest $request, WorkflowApproval $approval)
     {
         $user = Auth::user();
         
@@ -77,43 +79,50 @@ class ApprovalController extends Controller
             abort(403, 'この申請を承認する権限がありません。');
         }
 
-        $validated = $request->validate([
-            'comment' => 'nullable|string|max:1000',
-        ]);
+        $validated = $request->validated();
 
-        // 承認処理
-        $approval->update([
-            'status' => WorkflowApproval::STATUS_APPROVED,
-            'comment' => $validated['comment'] ?? null,
-            'approved_at' => now(),
-        ]);
+        // トランザクション処理
+        DB::transaction(function () use ($approval, $validated) {
+            // 承認処理
+            $approval->update([
+                'status' => WorkflowApproval::STATUS_APPROVED,
+                'comment' => $validated['comment'] ?? null,
+                'approved_at' => now(),
+            ]);
 
-        // 申請の状態を更新
-        if ($approval->request_type === 'expense') {
-            $expense = Expense::find($approval->request_id);
-            if ($expense && $approval->is_final_approval) {
-                $expense->update([
-                    'status' => Expense::STATUS_APPROVED,
-                ]);
-            }
-        } elseif ($approval->request_type === 'travel') {
-            $travelRequest = TravelRequest::find($approval->request_id);
-            if ($travelRequest) {
-                if ($approval->is_final_approval) {
-                    // 最終承認の場合は承認済み
-                    $travelRequest->update([
-                        'status' => TravelRequest::STATUS_APPROVED,
-                        'approved_at' => now(),
+            // 申請の状態を更新
+            if ($approval->request_type === 'expense') {
+                $expense = Expense::find($approval->request_id);
+                if ($expense && $approval->is_final_approval) {
+                    $expense->update([
+                        'status' => Expense::STATUS_APPROVED,
                     ]);
-                } else {
-                    // 中間承認の場合は次の承認ステップを作成
-                    $this->createNextApprovalStep($travelRequest);
+                }
+            } elseif ($approval->request_type === 'travel') {
+                $travelRequest = TravelRequest::find($approval->request_id);
+                if ($travelRequest) {
+                    if ($approval->is_final_approval) {
+                        // 最終承認の場合は承認済み
+                        $travelRequest->update([
+                            'status' => TravelRequest::STATUS_APPROVED,
+                            'approved_at' => now(),
+                        ]);
+                    } else {
+                        // 中間承認の場合は次の承認ステップを作成
+                        $this->createNextApprovalStep($travelRequest);
+                    }
                 }
             }
-        }
+        });
 
-        // 申請者にメール通知
-        Mail::to($approval->applicant->email)->send(new ApprovalNotification($approval));
+        // トランザクション外でメール通知
+        try {
+            Mail::to($approval->applicant->email)->send(new ApprovalNotification($approval));
+        } catch (\Exception $e) {
+            \Log::error('メール送信エラー: ' . $e->getMessage());
+            return redirect()->route('approvals.index')
+                ->with('warning', '承認は完了しましたが、メール送信でエラーが発生しました。');
+        }
 
         return redirect()->route('approvals.index')
             ->with('success', '承認しました。申請者に通知しました。');
@@ -122,7 +131,7 @@ class ApprovalController extends Controller
     /**
      * 差戻
      */
-    public function reject(Request $request, WorkflowApproval $approval)
+    public function reject(ApprovalRequest $request, WorkflowApproval $approval)
     {
         $user = Auth::user();
         
@@ -131,36 +140,43 @@ class ApprovalController extends Controller
             abort(403, 'この申請を差戻す権限がありません。');
         }
 
-        $validated = $request->validate([
-            'comment' => 'required|string|max:1000',
-        ]);
+        $validated = $request->validated();
 
-        // 差戻処理
-        $approval->update([
-            'status' => WorkflowApproval::STATUS_REJECTED,
-            'comment' => $validated['comment'],
-            'approved_at' => now(),
-        ]);
+        // トランザクション処理
+        DB::transaction(function () use ($approval, $validated) {
+            // 差戻処理
+            $approval->update([
+                'status' => WorkflowApproval::STATUS_REJECTED,
+                'comment' => $validated['comment'],
+                'approved_at' => now(),
+            ]);
 
-        // 申請の状態を差戻に更新
-        if ($approval->request_type === 'expense') {
-            $expense = Expense::find($approval->request_id);
-            if ($expense) {
-                $expense->update([
-                    'status' => Expense::STATUS_REJECTED,
-                ]);
+            // 申請の状態を差戻に更新
+            if ($approval->request_type === 'expense') {
+                $expense = Expense::find($approval->request_id);
+                if ($expense) {
+                    $expense->update([
+                        'status' => Expense::STATUS_REJECTED,
+                    ]);
+                }
+            } elseif ($approval->request_type === 'travel') {
+                $travelRequest = TravelRequest::find($approval->request_id);
+                if ($travelRequest) {
+                    $travelRequest->update([
+                        'status' => TravelRequest::STATUS_REJECTED,
+                    ]);
+                }
             }
-        } elseif ($approval->request_type === 'travel') {
-            $travelRequest = TravelRequest::find($approval->request_id);
-            if ($travelRequest) {
-                $travelRequest->update([
-                    'status' => TravelRequest::STATUS_REJECTED,
-                ]);
-            }
+        });
+
+        // トランザクション外でメール通知
+        try {
+            Mail::to($approval->applicant->email)->send(new RejectionNotification($approval));
+        } catch (\Exception $e) {
+            \Log::error('メール送信エラー: ' . $e->getMessage());
+            return redirect()->route('approvals.index')
+                ->with('warning', '差戻は完了しましたが、メール送信でエラーが発生しました。');
         }
-
-        // 申請者にメール通知
-        Mail::to($approval->applicant->email)->send(new RejectionNotification($approval));
 
         return redirect()->route('approvals.index')
             ->with('success', '差戻しました。申請者に通知しました。');

@@ -51,21 +51,21 @@
                         <div class="space-y-6">
                             <!-- メールアドレス -->
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                                <label for="email" class="block text-base font-medium text-gray-700">メールアドレス</label>
                                 <div class="mt-1">
                                     <input id="email" name="email" type="email" placeholder="メールアドレスを入力"
                                         class="form-input w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
                                         value="{{ old('email') }}" required autofocus />
                                 </div>
                                 @error('email')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-2 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- 送信ボタン -->
                             <div>
                                 <button type="submit"
-                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                                     リセットリンクを送信
                                 </button>
                             </div>
@@ -73,7 +73,7 @@
                             <!-- ログインに戻るリンク -->
                             <div class="text-center">
                                 <a href="{{ route('login') }}"
-                                    class="text-sm text-indigo-600 hover:text-indigo-500 hover:underline">
+                                    class="text-base text-indigo-600 hover:text-indigo-500 hover:underline">
                                     ログインに戻る
                                 </a>
                             </div>

@@ -5,7 +5,7 @@
                 {{ __('お知らせ詳細') }}
             </h2>
             <a href="{{ route('news.index') }}" 
-               class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+               class="text-indigo-600 hover:text-indigo-800 text-base font-medium">
                 ← 一覧に戻る
             </a>
         </div>
@@ -35,7 +35,7 @@
                     </h1>
 
                     <!-- メタ情報 -->
-                    <div class="flex items-center gap-4 text-sm text-gray-500 mb-6 pb-4 border-b">
+                    <div class="flex items-center gap-4 text-base text-gray-500 mb-6 pb-4 border-b">
                         <span>投稿者: {{ $news->postedBy->name ?? '不明' }}</span>
                         <span>公開日: {{ $news->published_at ? $news->published_at->format('Y年m月d日 H:i') : '未設定' }}</span>
                         <span>閲覧数: {{ $news->view_count }}</span>
@@ -61,7 +61,7 @@
                     @can('update', $news)
                         <div class="flex gap-3 pt-4 border-t">
                             <a href="{{ route('news.edit', $news->id) }}" 
-                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                 編集
                             </a>
                             <form method="POST" action="{{ route('news.destroy', $news->id) }}" 
@@ -69,7 +69,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
-                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                     削除
                                 </button>
                             </form>

@@ -20,7 +20,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">経費</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">一般経費の申請</p>
+                        <p class="text-gray-600 text-base">一般経費の申請</p>
                     </div>
                 </a>
 
@@ -35,7 +35,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">交通費</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">交通費の申請</p>
+                        <p class="text-gray-600 text-base">交通費の申請</p>
                     </div>
                 </a>
 
@@ -50,7 +50,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">出張</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">出張申請</p>
+                        <p class="text-gray-600 text-base">出張申請</p>
                     </div>
                 </a>
             </div>
@@ -61,7 +61,7 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">申請一覧</h3>
-                            <p class="text-sm text-gray-600">過去の申請履歴を確認できます</p>
+                            <p class="text-base text-gray-600">過去の申請履歴を確認できます</p>
                         </div>
                         <a href="{{ route('expenses.index') }}" 
                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">

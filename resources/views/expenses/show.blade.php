@@ -5,7 +5,7 @@
                 {{ __('経費申請詳細') }}
             </h2>
             <a href="{{ route('expenses.index') }}" 
-               class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+               class="text-indigo-600 hover:text-indigo-800 text-base font-medium">
                 ← 一覧に戻る
             </a>
         </div>
@@ -30,8 +30,8 @@
 
                     <!-- 申請者情報 -->
                     <div class="mb-6 pb-4 border-b">
-                        <h3 class="text-sm font-medium text-gray-500 mb-2">申請者情報</h3>
-                        <div class="grid grid-cols-2 gap-4 text-sm">
+                        <h3 class="text-base font-medium text-gray-500 mb-2">申請者情報</h3>
+                        <div class="grid grid-cols-2 gap-4 text-base">
                             <div>
                                 <span class="text-gray-500">申請者</span>
                                 <p class="text-gray-900 font-medium">{{ $expense->user->name }}</p>
@@ -53,8 +53,8 @@
 
                     <!-- 経費明細 -->
                     <div class="mb-6 pb-4 border-b">
-                        <h3 class="text-sm font-medium text-gray-500 mb-4">経費明細</h3>
-                        <div class="grid grid-cols-2 gap-4 text-sm">
+                        <h3 class="text-base font-medium text-gray-500 mb-4">経費明細</h3>
+                        <div class="grid grid-cols-2 gap-4 text-base">
                             <div>
                                 <span class="text-gray-500">経費発生日</span>
                                 <p class="text-gray-900 font-medium">{{ $expense->date->format('Y年m月d日') }}</p>
@@ -77,7 +77,7 @@
                     <!-- 領収書 -->
                     @if($expense->receipt_path)
                         <div class="mb-6 pb-4 border-b">
-                            <h3 class="text-sm font-medium text-gray-500 mb-2">領収書</h3>
+                            <h3 class="text-base font-medium text-gray-500 mb-2">領収書</h3>
                             <a href="{{ asset('storage/' . $expense->receipt_path) }}" 
                                target="_blank"
                                class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800">
@@ -93,19 +93,19 @@
                     <!-- 承認履歴 -->
                     @if($expense->workflowApprovals && $expense->workflowApprovals->count() > 0)
                         <div class="mb-6 pb-4 border-b">
-                            <h3 class="text-sm font-medium text-gray-500 mb-4">承認履歴</h3>
+                            <h3 class="text-base font-medium text-gray-500 mb-4">承認履歴</h3>
                             <div class="space-y-3">
                                 @foreach($expense->workflowApprovals as $approval)
                                     <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                                         <div class="flex-1">
                                             <div class="flex items-center gap-2 mb-1">
-                                                <span class="text-sm font-medium text-gray-900">{{ $approval->approver->name ?? '未設定' }}</span>
+                                                <span class="text-base font-medium text-gray-900">{{ $approval->approver->name ?? '未設定' }}</span>
                                                 <span class="bg-{{ $approval->status_color }}-100 text-{{ $approval->status_color }}-800 text-xs font-semibold px-2 py-1 rounded">
                                                     {{ $approval->status_label }}
                                                 </span>
                                             </div>
                                             @if($approval->comment)
-                                                <p class="text-sm text-gray-600">{{ $approval->comment }}</p>
+                                                <p class="text-base text-gray-600">{{ $approval->comment }}</p>
                                             @endif
                                             @if($approval->approved_at)
                                                 <p class="text-xs text-gray-500 mt-1">{{ $approval->approved_at->format('Y年m月d日 H:i') }}</p>
@@ -121,7 +121,7 @@
                     <div class="flex gap-3 pt-4 border-t">
                         @can('view', $expense)
                             <a href="{{ route('expenses.download-excel', $expense->id) }}" 
-                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors flex items-center gap-2">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
@@ -130,7 +130,7 @@
                         @endcan
                         @can('update', $expense)
                             <a href="{{ route('expenses.edit', $expense->id) }}" 
-                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                 @if($expense->status === \App\Models\Expense::STATUS_REJECTED)
                                     再申請
                                 @else
@@ -142,7 +142,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
-                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                     削除
                                 </button>
                             </form>

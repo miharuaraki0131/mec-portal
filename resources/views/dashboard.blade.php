@@ -37,7 +37,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">社内連絡</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">お知らせ・連絡事項を確認</p>
+                        <p class="text-gray-600 text-base">お知らせ・連絡事項を確認</p>
                     </div>
                 </a>
 
@@ -52,7 +52,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">会社の色々</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">会社情報・各種リンク</p>
+                        <p class="text-gray-600 text-base">会社情報・各種リンク</p>
                     </div>
                 </a>
 
@@ -67,7 +67,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">各種資料</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">PDF・Excel等の資料を閲覧</p>
+                        <p class="text-gray-600 text-base">PDF・Excel等の資料を閲覧</p>
                     </div>
                 </a>
 
@@ -82,7 +82,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">ご意見箱</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">質問・要望を送信</p>
+                        <p class="text-gray-600 text-base">質問・要望を送信</p>
                     </div>
                 </a>
 
@@ -97,7 +97,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">経費精算</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">経費申請・精算</p>
+                        <p class="text-gray-600 text-base">経費申請・精算</p>
                     </div>
                 </a>
 
@@ -114,7 +114,7 @@
                                 </div>
                                 <h3 class="ml-3 text-lg font-semibold text-gray-900">マスタ管理</h3>
                             </div>
-                            <p class="text-gray-600 text-sm">ユーザー・部署・各種マスタ管理</p>
+                            <p class="text-gray-600 text-base">ユーザー・部署・各種マスタ管理</p>
                         </div>
                     </a>
                 @else
@@ -129,7 +129,7 @@
                                 </div>
                                 <h3 class="ml-3 text-lg font-semibold text-gray-900">FAQ</h3>
                             </div>
-                            <p class="text-gray-600 text-sm">よくある質問を検索</p>
+                            <p class="text-gray-600 text-base">よくある質問を検索</p>
                         </div>
                     </a>
                 @endif
@@ -169,10 +169,13 @@
                                                     </span>
                                                 @endif
                                             </div>
-                                            <h4 class="text-sm font-medium text-gray-900 truncate">
+                                            <h4 class="text-base font-medium text-gray-900 truncate mb-1">
                                                 {{ $news->title }}
                                             </h4>
-                                            <div class="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                                            <p class="text-sm text-gray-600 line-clamp-2 mb-1">
+                                                {{ Str::limit(strip_tags($news->content), 100) }}
+                                            </p>
+                                            <div class="flex items-center gap-2 text-sm text-gray-500">
                                                 <span>{{ $news->published_at ? $news->published_at->format('Y/m/d') : '' }}</span>
                                             </div>
                                         </div>

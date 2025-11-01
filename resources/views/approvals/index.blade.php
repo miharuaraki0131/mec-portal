@@ -18,7 +18,7 @@
                 <div class="p-4">
                     <form method="GET" action="{{ route('approvals.index') }}" class="flex gap-4">
                         <div class="flex-1 min-w-[200px]">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">申請種別</label>
+                            <label class="block text-base font-medium text-gray-700 mb-1">申請種別</label>
                             <select name="type" 
                                     class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200">
                                 <option value="">すべて</option>
@@ -64,26 +64,26 @@
                                         }
                                     @endphp
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             @if($approval->request_type === 'expense')
                                                 <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">経費</span>
                                             @else
                                                 <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2 py-1 rounded">出張</span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $approval->applicant->name }} ({{ $approval->applicant->user_code }})
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                        <td class="px-6 py-4 text-base text-gray-900">
                                             {{ $title }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $amount }}円
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-500">
                                             {{ $approval->created_at->format('Y/m/d') }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-base font-medium">
                                             <div class="flex justify-end gap-2">
                                                 <a href="{{ $approval->request_type === 'expense' ? route('expenses.download-excel', $approval->request_id) : route('travel-requests.download-excel', $approval->request_id) }}" 
                                                    class="text-blue-600 hover:text-blue-900"
@@ -128,7 +128,7 @@
             <form id="approveForm" method="POST">
                 @csrf
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">コメント（任意）</label>
+                    <label class="block text-base font-medium text-gray-700 mb-1">コメント（任意）</label>
                     <textarea name="comment" rows="3" class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200"></textarea>
                 </div>
                 <div class="flex justify-end gap-3">
@@ -150,7 +150,7 @@
             <form id="rejectForm" method="POST">
                 @csrf
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">差戻理由 <span class="text-red-500">*</span></label>
+                    <label class="block text-base font-medium text-gray-700 mb-1">差戻理由 <span class="text-red-500">*</span></label>
                     <textarea name="comment" rows="3" required class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200"></textarea>
                 </div>
                 <div class="flex justify-end gap-3">

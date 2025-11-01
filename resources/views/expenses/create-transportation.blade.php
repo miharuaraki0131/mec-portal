@@ -16,7 +16,7 @@
                         <!-- 申請期間 -->
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div>
-                                <label for="period_from" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="period_from" class="block text-base font-medium text-gray-700 mb-1">
                                     期間（開始日） <span class="text-red-500">*</span>
                                 </label>
                                 <input type="date" 
@@ -26,11 +26,11 @@
                                        required
                                        class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('period_from') border-red-500 @enderror">
                                 @error('period_from')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label for="period_to" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="period_to" class="block text-base font-medium text-gray-700 mb-1">
                                     期間（終了日） <span class="text-red-500">*</span>
                                 </label>
                                 <input type="date" 
@@ -40,7 +40,7 @@
                                        required
                                        class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('period_to') border-red-500 @enderror">
                                 @error('period_to')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -48,12 +48,12 @@
                         <!-- 明細 -->
                         <div class="mb-6">
                             <div class="flex justify-between items-center mb-3">
-                                <label class="block text-sm font-medium text-gray-700">
+                                <label class="block text-base font-medium text-gray-700">
                                     交通費明細 <span class="text-red-500">*</span>
                                 </label>
                                 <button type="button" 
                                         id="addItemBtn"
-                                        class="text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg transition-colors">
+                                        class="text-base bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg transition-colors">
                                     + 明細を追加
                                 </button>
                             </div>
@@ -66,7 +66,7 @@
                                             <input type="date" 
                                                    name="items[0][date]" 
                                                    required
-                                                   class="w-full rounded-lg border-gray-300 text-sm">
+                                                   class="w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                         <div class="md:col-span-2">
                                             <label class="block text-xs font-medium text-gray-700 mb-1">業務（セ/#）・行き先 <span class="text-red-500">*</span></label>
@@ -74,7 +74,7 @@
                                                    name="items[0][business]" 
                                                    placeholder="例: 面談（場所：大阪事業所）"
                                                    required
-                                                   class="w-full rounded-lg border-gray-300 text-sm">
+                                                   class="w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                         <div>
                                             <label class="block text-xs font-medium text-gray-700 mb-1">乗物 <span class="text-red-500">*</span></label>
@@ -82,7 +82,7 @@
                                                    name="items[0][vehicle]" 
                                                    placeholder="例: 南海電車"
                                                    required
-                                                   class="w-full rounded-lg border-gray-300 text-sm">
+                                                   class="w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                         <div class="md:col-span-2">
                                             <label class="block text-xs font-medium text-gray-700 mb-1">発 ～ （経由） ～ 着 <span class="text-red-500">*</span></label>
@@ -109,7 +109,7 @@
                                             <label class="block text-xs font-medium text-gray-700 mb-1">片道/往復 <span class="text-red-500">*</span></label>
                                             <select name="items[0][transportation_type]" 
                                                     required
-                                                    class="w-full rounded-lg border-gray-300 text-sm">
+                                                    class="w-full rounded-lg border-gray-300 text-base">
                                                 <option value="往復" selected>往復</option>
                                                 <option value="片道">片道</option>
                                             </select>
@@ -122,7 +122,7 @@
                                                    min="0"
                                                    step="1"
                                                    required
-                                                   class="item-amount w-full rounded-lg border-gray-300 text-sm">
+                                                   class="item-amount w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                     </div>
                                     <button type="button" 
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             @error('items')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

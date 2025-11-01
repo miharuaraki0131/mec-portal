@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewsRequest;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,18 +37,11 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(NewsRequest $request)
     {
         $this->authorize('create', News::class);
 
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
-            'category' => ['nullable', 'string', 'max:100'],
-            'priority' => ['nullable', 'integer', 'in:0,1'],
-            'published_at' => ['nullable', 'date'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'], // 5MB
-        ]);
+        $validated = $request->validated();
 
         // 画像のアップロード
         $imagePath = null;
@@ -90,18 +84,11 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, News $news)
+    public function update(NewsRequest $request, News $news)
     {
         $this->authorize('update', $news);
 
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
-            'category' => ['nullable', 'string', 'max:100'],
-            'priority' => ['nullable', 'integer', 'in:0,1'],
-            'published_at' => ['nullable', 'date'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'], // 5MB
-        ]);
+        $validated = $request->validated();
 
         // 画像の更新
         if ($request->hasFile('image')) {

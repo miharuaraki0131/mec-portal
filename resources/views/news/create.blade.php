@@ -14,7 +14,7 @@
 
                         <!-- タイトル -->
                         <div class="mb-6">
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="title" class="block text-base font-medium text-gray-700 mb-2">
                                 タイトル <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -25,13 +25,13 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                    placeholder="お知らせのタイトルを入力">
                             @error('title')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- カテゴリ -->
                         <div class="mb-6">
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="category" class="block text-base font-medium text-gray-700 mb-2">
                                 カテゴリ
                             </label>
                             <input type="text" 
@@ -41,13 +41,13 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                    placeholder="例: 社内報、メンテナンス">
                             @error('category')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 優先度 -->
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-base font-medium text-gray-700 mb-2">
                                 優先度
                             </label>
                             <div class="flex gap-4">
@@ -64,7 +64,7 @@
 
                         <!-- 公開日時 -->
                         <div class="mb-6">
-                            <label for="published_at" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="published_at" class="block text-base font-medium text-gray-700 mb-2">
                                 公開日時（空白の場合は即座に公開）
                             </label>
                             <input type="datetime-local" 
@@ -73,13 +73,13 @@
                                    value="{{ old('published_at') }}"
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
                             @error('published_at')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 本文 -->
                         <div class="mb-6">
-                            <label for="content" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="content" class="block text-base font-medium text-gray-700 mb-2">
                                 本文 <span class="text-red-500">*</span>
                             </label>
                             <textarea id="content" 
@@ -89,13 +89,13 @@
                                       class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                       placeholder="お知らせの内容を入力">{{ old('content') }}</textarea>
                             @error('content')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 画像 -->
                         <div class="mb-6">
-                            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="image" class="block text-base font-medium text-gray-700 mb-2">
                                 画像（任意）
                             </label>
                             <input type="file" 
@@ -105,7 +105,7 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 @error('image') border-red-500 @enderror">
                             <p class="mt-1 text-xs text-gray-500">対応形式: JPG, PNG, GIF（最大5MB）</p>
                             @error('image')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

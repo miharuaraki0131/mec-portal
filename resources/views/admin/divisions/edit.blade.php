@@ -15,7 +15,7 @@
 
                         <!-- 部署名 -->
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="name" class="block text-base font-medium text-gray-700 mb-1">
                                 部署名 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -25,13 +25,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('name') border-red-500 @enderror">
                             @error('name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 親部署 -->
                         <div class="mb-4">
-                            <label for="parent_id" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="parent_id" class="block text-base font-medium text-gray-700 mb-1">
                                 親部署
                             </label>
                             <select id="parent_id" 
@@ -46,13 +46,13 @@
                             </select>
                             <p class="mt-1 text-xs text-gray-500">親部署を選択すると、その部署の子部署（課）として登録されます</p>
                             @error('parent_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 責任者 -->
                         <div class="mb-6">
-                            <label for="manager_id" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="manager_id" class="block text-base font-medium text-gray-700 mb-1">
                                 責任者
                             </label>
                             <select id="manager_id" 
@@ -66,7 +66,7 @@
                                 @endforeach
                             </select>
                             @error('manager_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

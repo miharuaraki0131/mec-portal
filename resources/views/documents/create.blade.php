@@ -14,7 +14,7 @@
 
                         <!-- タイトル -->
                         <div class="mb-6">
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="title" class="block text-base font-medium text-gray-700 mb-2">
                                 資料タイトル <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -25,13 +25,13 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                    placeholder="資料のタイトルを入力">
                             @error('title')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- ファイル -->
                         <div class="mb-6">
-                            <label for="file" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="file" class="block text-base font-medium text-gray-700 mb-2">
                                 ファイル <span class="text-red-500">*</span>
                             </label>
                             <input type="file" 
@@ -42,13 +42,13 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
                             <p class="mt-1 text-xs text-gray-500">対応形式: PDF, Excel, Word, PowerPoint（最大10MB）</p>
                             @error('file')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 部署 -->
                         <div class="mb-6">
-                            <label for="division_id" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="division_id" class="block text-base font-medium text-gray-700 mb-2">
                                 部署（選択しない場合は「全般」になります）
                             </label>
                             <select id="division_id" 
@@ -75,13 +75,13 @@
                                 @endforeach
                             </select>
                             @error('division_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- カテゴリ -->
                         <div class="mb-6">
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="category" class="block text-base font-medium text-gray-700 mb-2">
                                 カテゴリ
                             </label>
                             <input type="text" 
@@ -91,7 +91,7 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                    placeholder="例: 社内規定、マニュアル、資料">
                             @error('category')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

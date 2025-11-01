@@ -6,7 +6,7 @@
             </h2>
             @can('create', App\Models\FAQ::class)
                 <a href="{{ route('faqs.create') }}" 
-                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                     新規登録
                 </a>
             @endcan
@@ -25,7 +25,7 @@
             <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
                 <form method="GET" action="{{ route('faqs.index') }}" class="space-y-4">
                     <div>
-                        <label for="search" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="search" class="block text-base font-medium text-gray-700 mb-2">
                             検索
                         </label>
                         <div class="flex gap-2">
@@ -36,7 +36,7 @@
                                    placeholder="質問や回答を検索..."
                                    class="flex-1 rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
                             <button type="submit" 
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg text-base font-medium transition-colors">
                                 検索
                             </button>
                         </div>
@@ -44,8 +44,8 @@
                     
                     <div class="flex flex-wrap gap-4">
                         <div>
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-1">カテゴリ</label>
-                            <select name="category" id="category" class="rounded-lg border-gray-300 text-sm">
+                            <label for="category" class="block text-base font-medium text-gray-700 mb-1">カテゴリ</label>
+                            <select name="category" id="category" class="rounded-lg border-gray-300 text-base">
                                 <option value="">すべて</option>
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
@@ -57,7 +57,7 @@
                         @if(request('search') || request('category'))
                             <div class="flex items-end">
                                 <a href="{{ route('faqs.index') }}" 
-                                   class="text-sm text-gray-600 hover:text-gray-800 underline">
+                                   class="text-base text-gray-600 hover:text-gray-800 underline">
                                     フィルターをクリア
                                 </a>
                             </div>
@@ -81,7 +81,7 @@
                                         <h3 class="text-lg font-semibold text-gray-900 mb-2">
                                             {{ $faq->question }}
                                         </h3>
-                                        <p class="text-gray-600 text-sm line-clamp-2 mb-3">
+                                        <p class="text-gray-600 text-base line-clamp-2 mb-3">
                                             {{ Str::limit($faq->answer, 150) }}
                                         </p>
                                         <div class="flex items-center gap-4 text-xs text-gray-500">

@@ -20,7 +20,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">社員情報</h3>
                         </div>
-                        <p class="text-gray-600 text-sm">部署・課ごとの社員一覧を確認</p>
+                        <p class="text-gray-600 text-base">部署・課ごとの社員一覧を確認</p>
                     </div>
                 </a>
 
@@ -35,7 +35,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">連絡先</h3>
                         </div>
-                        <div class="text-gray-600 text-sm space-y-3 mt-4">
+                        <div class="text-gray-600 text-base space-y-3 mt-4">
                             <div>
                                 <p class="font-medium text-gray-700 mb-1">本社</p>
                                 <p class="text-xs">〒532-0011</p>
@@ -67,7 +67,7 @@
                             </div>
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">各種リンク</h3>
                         </div>
-                        <div class="text-gray-600 text-sm space-y-2 mt-4">
+                        <div class="text-gray-600 text-base space-y-2 mt-4">
                             <a href="https://www.n-mec.com/" target="_blank" rel="noopener noreferrer" class="block hover:text-indigo-600 transition-colors">
                                 <span class="font-medium">会社ホームページ</span>
                                 <svg class="inline-block w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

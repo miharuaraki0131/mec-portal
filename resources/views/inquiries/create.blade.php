@@ -14,7 +14,7 @@
 
                         <!-- 件名 -->
                         <div class="mb-4">
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="subject" class="block text-base font-medium text-gray-700 mb-1">
                                 件名 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -24,13 +24,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('subject') border-red-500 @enderror">
                             @error('subject')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 送信先部署 -->
                         <div class="mb-4">
-                            <label for="department" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="department" class="block text-base font-medium text-gray-700 mb-1">
                                 送信先部署 <span class="text-red-500">*</span>
                             </label>
                             <select id="department" 
@@ -61,13 +61,13 @@
                                 <option value="その他" {{ old('department') === 'その他' ? 'selected' : '' }}>その他</option>
                             </select>
                             @error('department')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- メッセージ -->
                         <div class="mb-6">
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="message" class="block text-base font-medium text-gray-700 mb-1">
                                 メッセージ <span class="text-red-500">*</span>
                             </label>
                             <textarea id="message" 
@@ -76,7 +76,7 @@
                                       required
                                       class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
                             @error('message')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

@@ -14,7 +14,7 @@
 
                         <!-- 質問 -->
                         <div class="mb-6">
-                            <label for="question" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="question" class="block text-base font-medium text-gray-700 mb-2">
                                 質問 <span class="text-red-500">*</span>
                             </label>
                             <textarea id="question" 
@@ -24,13 +24,13 @@
                                       class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                       placeholder="よくある質問を入力">{{ old('question') }}</textarea>
                             @error('question')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 回答 -->
                         <div class="mb-6">
-                            <label for="answer" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="answer" class="block text-base font-medium text-gray-700 mb-2">
                                 回答 <span class="text-red-500">*</span>
                             </label>
                             <textarea id="answer" 
@@ -40,13 +40,13 @@
                                       class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                       placeholder="回答を入力">{{ old('answer') }}</textarea>
                             @error('answer')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- カテゴリ -->
                         <div class="mb-6">
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="category" class="block text-base font-medium text-gray-700 mb-2">
                                 カテゴリ
                             </label>
                             <input type="text" 
@@ -56,7 +56,7 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                                    placeholder="例: ログイン、申請、システム">
                             @error('category')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

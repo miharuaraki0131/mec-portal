@@ -5,7 +5,7 @@
                 {{ __('ご意見箱') }}
             </h2>
             <a href="{{ route('inquiries.create') }}" 
-               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                 新規問い合わせ
             </a>
         </div>
@@ -24,7 +24,7 @@
                 <div class="p-4">
                     <form method="GET" action="{{ route('inquiries.index') }}" class="flex flex-wrap gap-4">
                         <div class="flex-1 min-w-[200px]">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">部署</label>
+                            <label class="block text-base font-medium text-gray-700 mb-1">部署</label>
                             <select name="department" 
                                     class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200">
                                 <option value="">すべて</option>
@@ -36,7 +36,7 @@
                             </select>
                         </div>
                         <div class="flex-1 min-w-[200px]">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">ステータス</label>
+                            <label class="block text-base font-medium text-gray-700 mb-1">ステータス</label>
                             <select name="status" 
                                     class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200">
                                 <option value="">すべて</option>
@@ -75,7 +75,7 @@
                                             <h3 class="text-lg font-semibold text-gray-900 mb-2">
                                                 {{ $inquiry->subject }}
                                             </h3>
-                                            <p class="text-gray-600 text-sm line-clamp-2 mb-3">
+                                            <p class="text-gray-600 text-base line-clamp-2 mb-3">
                                                 {{ Str::limit($inquiry->message, 150) }}
                                             </p>
                                             <div class="flex items-center gap-4 text-xs text-gray-500">

@@ -6,7 +6,7 @@
             </h2>
             @can('create', App\Models\Document::class)
                 <a href="{{ route('documents.create') }}" 
-                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                     資料をアップロード
                 </a>
             @endcan
@@ -25,8 +25,8 @@
             <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
                 <form method="GET" action="{{ route('documents.index') }}" class="flex flex-wrap gap-4">
                     <div>
-                        <label for="division_id" class="block text-sm font-medium text-gray-700 mb-1">部署</label>
-                        <select name="division_id" id="division_id" class="rounded-lg border-gray-300 text-sm">
+                        <label for="division_id" class="block text-base font-medium text-gray-700 mb-1">部署</label>
+                        <select name="division_id" id="division_id" class="rounded-lg border-gray-300 text-base">
                             <option value="">すべて</option>
                             <option value="all" {{ request('division_id') == 'all' ? 'selected' : '' }}>全般</option>
                             @foreach($divisions as $parentDivision)
@@ -50,8 +50,8 @@
                         </select>
                     </div>
                     <div>
-                        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">カテゴリ</label>
-                        <select name="category" id="category" class="rounded-lg border-gray-300 text-sm">
+                        <label for="category" class="block text-base font-medium text-gray-700 mb-1">カテゴリ</label>
+                        <select name="category" id="category" class="rounded-lg border-gray-300 text-base">
                             <option value="">すべて</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
@@ -61,8 +61,8 @@
                         </select>
                     </div>
                     <div>
-                        <label for="file_type" class="block text-sm font-medium text-gray-700 mb-1">ファイル形式</label>
-                        <select name="file_type" id="file_type" class="rounded-lg border-gray-300 text-sm">
+                        <label for="file_type" class="block text-base font-medium text-gray-700 mb-1">ファイル形式</label>
+                        <select name="file_type" id="file_type" class="rounded-lg border-gray-300 text-base">
                             <option value="">すべて</option>
                             <option value="pdf" {{ request('file_type') == 'pdf' ? 'selected' : '' }}>PDF</option>
                             <option value="xlsx" {{ request('file_type') == 'xlsx' ? 'selected' : '' }}>Excel</option>
@@ -71,7 +71,7 @@
                         </select>
                     </div>
                     <div class="flex items-end">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                             検索
                         </button>
                     </div>
@@ -113,11 +113,11 @@
 
                                 <div class="flex gap-2">
                                     <a href="{{ route('documents.show', $document->id) }}" 
-                                       class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium text-center transition-colors">
+                                       class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium text-center transition-colors">
                                         詳細
                                     </a>
                                     <a href="{{ route('documents.download', $document->id) }}" 
-                                       class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                       class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                         ダウンロード
                                     </a>
                                 </div>

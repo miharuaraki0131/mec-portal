@@ -42,38 +42,38 @@
                         <div class="space-y-6">
                             <!-- ユーザー名 -->
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                                <label for="name" class="block text-base font-medium text-gray-700">メールアドレス</label>
                                 <div class="mt-1">
                                     <input id="email" name="email" type="text" placeholder="メールアドレスを入力"
                                         class="form-input w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
                                         value="{{ old('email') }}" required autofocus />
                                 </div>
                                 @error('email')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-2 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             
                             <!-- パスワード -->
                             <div>
-                                <label for="password" class="block text-sm font-medium text-gray-700">パスワード</label>
+                                <label for="password" class="block text-base font-medium text-gray-700">パスワード</label>
                                 <div class="mt-1">
                                     <input id="password" name="password" type="password" placeholder="パスワードを入力"
                                         class="form-input w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors"
                                         required autocomplete="current-password" />
                                 </div>
                                 @error('password')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-2 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="flex items-center justify-between">
                                 <a href="{{ route('password.request') }}"
-                                    class="text-sm text-indigo-600 hover:text-indigo-500 hover:underline">
+                                    class="text-base text-indigo-600 hover:text-indigo-500 hover:underline">
                                     パスワードをお忘れですか？
                                 </a>
                                 <input id="remember_me" name="remember" type="checkbox"
                                     class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+                                <label for="remember_me" class="ml-2 block text-base text-gray-900">
                                     ログイン状態を保持する
                                 </label>
 
@@ -82,7 +82,7 @@
                             <!-- ログインボタン -->
                             <div>
                                 <button type="submit"
-                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                                     ログイン
                                 </button>
                             </div>

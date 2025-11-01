@@ -5,7 +5,7 @@
                 {{ __('経費申請一覧') }}
             </h2>
             <a href="{{ route('expenses.create') }}" 
-               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                 新規申請
             </a>
         </div>
@@ -24,7 +24,7 @@
                 <div class="p-4">
                     <form method="GET" action="{{ route('expenses.index') }}" class="flex gap-4">
                         <div class="flex-1 min-w-[200px]">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">ステータス</label>
+                            <label class="block text-base font-medium text-gray-700 mb-1">ステータス</label>
                             <select name="status" 
                                     class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200">
                                 <option value="">すべて</option>
@@ -60,16 +60,16 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach($expenses as $expense)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $expense->date->format('Y/m/d') }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $expense->category }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                        <td class="px-6 py-4 text-base text-gray-900">
                                             {{ Str::limit($expense->description, 30) }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ number_format($expense->amount) }}円
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -77,10 +77,10 @@
                                                 {{ $expense->status_label }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-500">
                                             {{ $expense->created_at->format('Y/m/d') }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-base font-medium">
                                             <a href="{{ route('expenses.show', $expense->id) }}" 
                                                class="text-indigo-600 hover:text-indigo-900">詳細</a>
                                         </td>

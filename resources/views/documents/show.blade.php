@@ -5,7 +5,7 @@
                 {{ __('資料詳細') }}
             </h2>
             <a href="{{ route('documents.index') }}" 
-               class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+               class="text-indigo-600 hover:text-indigo-800 text-base font-medium">
                 ← 一覧に戻る
             </a>
         </div>
@@ -21,7 +21,7 @@
                     </h1>
 
                     <!-- メタ情報 -->
-                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pb-4 border-b">
+                    <div class="flex flex-wrap items-center gap-4 text-base text-gray-500 mb-6 pb-4 border-b">
                         <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded font-medium">
                             {{ $document->division ? $document->division->name : '全般' }}
                         </span>
@@ -70,7 +70,7 @@
                     @can('update', $document)
                         <div class="flex gap-3 pt-4 border-t">
                             <a href="{{ route('documents.edit', $document->id) }}" 
-                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                 編集
                             </a>
                             <form method="POST" action="{{ route('documents.destroy', $document->id) }}" 
@@ -78,7 +78,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
-                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                     削除
                                 </button>
                             </form>

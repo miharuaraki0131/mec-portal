@@ -14,7 +14,7 @@
 
                         <!-- 出張先 -->
                         <div class="mb-4">
-                            <label for="destination" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="destination" class="block text-base font-medium text-gray-700 mb-1">
                                 出張先 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -25,13 +25,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('destination') border-red-500 @enderror">
                             @error('destination')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 目的 -->
                         <div class="mb-4">
-                            <label for="purpose" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="purpose" class="block text-base font-medium text-gray-700 mb-1">
                                 目的 <span class="text-red-500">*</span>
                             </label>
                             <textarea id="purpose" 
@@ -41,14 +41,14 @@
                                       required
                                       class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('purpose') border-red-500 @enderror">{{ old('purpose') }}</textarea>
                             @error('purpose')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 日付 -->
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label for="departure_date" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="departure_date" class="block text-base font-medium text-gray-700 mb-1">
                                     出発日 <span class="text-red-500">*</span>
                                 </label>
                                 <input type="date" 
@@ -58,11 +58,11 @@
                                        required
                                        class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('departure_date') border-red-500 @enderror">
                                 @error('departure_date')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label for="return_date" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="return_date" class="block text-base font-medium text-gray-700 mb-1">
                                     帰着日 <span class="text-red-500">*</span>
                                 </label>
                                 <input type="date" 
@@ -72,14 +72,14 @@
                                        required
                                        class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('return_date') border-red-500 @enderror">
                                 @error('return_date')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
 
                         <!-- 前払金 -->
                         <div class="mb-6">
-                            <label for="advance_payment" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="advance_payment" class="block text-base font-medium text-gray-700 mb-1">
                                 前払金（任意）
                             </label>
                             <input type="number" 
@@ -91,19 +91,19 @@
                                    placeholder="0"
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('advance_payment') border-red-500 @enderror">
                             @error('advance_payment')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 経費明細 -->
                         <div class="mb-6">
                             <div class="flex justify-between items-center mb-3">
-                                <label class="block text-sm font-medium text-gray-700">
+                                <label class="block text-base font-medium text-gray-700">
                                     経費明細 <span class="text-red-500">*</span>
                                 </label>
                                 <button type="button" 
                                         id="addExpenseBtn"
-                                        class="text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg transition-colors">
+                                        class="text-base bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg transition-colors">
                                     + 明細を追加
                                 </button>
                             </div>
@@ -116,13 +116,13 @@
                                             <input type="date" 
                                                    name="expenses[0][date]" 
                                                    required
-                                                   class="w-full rounded-lg border-gray-300 text-sm">
+                                                   class="w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                         <div>
                                             <label class="block text-xs font-medium text-gray-700 mb-1">費目</label>
                                             <select name="expenses[0][category]" 
                                                     required
-                                                    class="w-full rounded-lg border-gray-300 text-sm">
+                                                    class="w-full rounded-lg border-gray-300 text-base">
                                                 <option value="交通費">交通費</option>
                                                 <option value="宿泊費">宿泊費</option>
                                                 <option value="日当">日当</option>
@@ -135,7 +135,7 @@
                                             <input type="text" 
                                                    name="expenses[0][description]" 
                                                    required
-                                                   class="w-full rounded-lg border-gray-300 text-sm">
+                                                   class="w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                         <div>
                                             <label class="block text-xs font-medium text-gray-700 mb-1">現金</label>
@@ -144,7 +144,7 @@
                                                    value="0"
                                                    min="0"
                                                    step="1"
-                                                   class="expense-cash w-full rounded-lg border-gray-300 text-sm">
+                                                   class="expense-cash w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                         <div>
                                             <label class="block text-xs font-medium text-gray-700 mb-1">チケット</label>
@@ -153,14 +153,14 @@
                                                    value="0"
                                                    min="0"
                                                    step="1"
-                                                   class="expense-ticket w-full rounded-lg border-gray-300 text-sm">
+                                                   class="expense-ticket w-full rounded-lg border-gray-300 text-base">
                                         </div>
                                     </div>
                                     <div class="mt-2">
                                         <label class="block text-xs font-medium text-gray-700 mb-1">備考（任意）</label>
                                         <input type="text" 
                                                name="expenses[0][remarks]" 
-                                               class="w-full rounded-lg border-gray-300 text-sm">
+                                               class="w-full rounded-lg border-gray-300 text-base">
                                     </div>
                                     <button type="button" 
                                             class="remove-expense-btn mt-2 text-xs text-red-600 hover:text-red-800">
@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             @error('expenses')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

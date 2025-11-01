@@ -14,7 +14,7 @@
 
                         <!-- 日付 -->
                         <div class="mb-4">
-                            <label for="date" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="date" class="block text-base font-medium text-gray-700 mb-1">
                                 経費発生日 <span class="text-red-500">*</span>
                             </label>
                             <input type="date" 
@@ -24,13 +24,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('date') border-red-500 @enderror">
                             @error('date')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 費目 -->
                         <div class="mb-4">
-                            <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="category" class="block text-base font-medium text-gray-700 mb-1">
                                 費目 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -41,13 +41,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('category') border-red-500 @enderror">
                             @error('category')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 金額 -->
                         <div class="mb-4">
-                            <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="amount" class="block text-base font-medium text-gray-700 mb-1">
                                 金額 <span class="text-red-500">*</span>
                             </label>
                             <input type="number" 
@@ -60,13 +60,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('amount') border-red-500 @enderror">
                             @error('amount')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 内容 -->
                         <div class="mb-4">
-                            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="description" class="block text-base font-medium text-gray-700 mb-1">
                                 内容 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -77,13 +77,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('description') border-red-500 @enderror">
                             @error('description')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 領収書 -->
                         <div class="mb-6">
-                            <label for="receipt" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="receipt" class="block text-base font-medium text-gray-700 mb-1">
                                 領収書（任意）
                             </label>
                             <input type="file" 
@@ -93,7 +93,7 @@
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('receipt') border-red-500 @enderror">
                             <p class="mt-1 text-xs text-gray-500">対応形式: JPG, PNG, PDF（最大5MB）</p>
                             @error('receipt')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 

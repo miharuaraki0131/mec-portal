@@ -29,7 +29,7 @@
                 <p class="text-center text-gray-700 mb-6">
                     日本メカトロン社内の情報・申請・資料を一元管理するポータルサイトです。
                 </p>
-                <p class="text-center text-sm text-gray-500 mb-6">
+                <p class="text-center text-base text-gray-500 mb-6">
                     「探す・申請する・共有する」をひとつの画面で完結させ、<br>
                     業務効率化と承認フローの透明化を目的とします。
                 </p>
@@ -56,7 +56,7 @@
             </div>
 
             <div class="mt-8 pt-6 border-t border-gray-200">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center text-sm text-gray-600">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center text-base text-gray-600">
                     <div>
                         <p class="font-semibold text-gray-800 mb-1">📊 ダッシュボード</p>
                         <p>お知らせ・申請状況を一覧表示</p>

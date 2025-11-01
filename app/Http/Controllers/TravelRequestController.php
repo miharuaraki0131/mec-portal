@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TravelRequest as TravelRequestFormRequest;
 use App\Models\TravelRequest;
 use App\Models\TravelExpense;
 use App\Models\Division;
@@ -10,6 +11,7 @@ use App\Models\WorkflowApproval;
 use App\Mail\TravelNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -54,55 +56,51 @@ class TravelRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TravelRequestFormRequest $request)
     {
-        $validated = $request->validate([
-            'destination' => 'required|string|max:255',
-            'purpose' => 'required|string|max:500',
-            'departure_date' => 'required|date',
-            'return_date' => 'required|date|after:departure_date',
-            'advance_payment' => 'nullable|numeric|min:0',
-            'expenses' => 'required|array|min:1',
-            'expenses.*.date' => 'required|date',
-            'expenses.*.description' => 'required|string|max:255',
-            'expenses.*.category' => 'required|string|in:交通費,宿泊費,日当,半日当,その他',
-            'expenses.*.cash' => 'nullable|numeric|min:0',
-            'expenses.*.ticket' => 'nullable|numeric|min:0',
-            'expenses.*.remarks' => 'nullable|string|max:500',
-        ]);
+        $validated = $request->validated();
 
-        // 出張申請を作成
-        $travelRequest = TravelRequest::create([
-            'user_id' => Auth::id(),
-            'destination' => $validated['destination'],
-            'purpose' => $validated['purpose'],
-            'departure_date' => $validated['departure_date'],
-            'return_date' => $validated['return_date'],
-            'advance_payment' => $validated['advance_payment'] ?? 0,
-            'status' => TravelRequest::STATUS_PENDING,
-        ]);
-
-        // 経費明細を作成
-        foreach ($validated['expenses'] as $expenseData) {
-            TravelExpense::create([
-                'travel_request_id' => $travelRequest->id,
-                'date' => $expenseData['date'],
-                'description' => $expenseData['description'],
-                'category' => $expenseData['category'],
-                'cash' => $expenseData['cash'] ?? 0,
-                'ticket' => $expenseData['ticket'] ?? 0,
-                'remarks' => $expenseData['remarks'] ?? null,
+        // トランザクション処理
+        DB::transaction(function () use ($validated, &$travelRequest) {
+            // 出張申請を作成
+            $travelRequest = TravelRequest::create([
+                'user_id' => Auth::id(),
+                'destination' => $validated['destination'],
+                'purpose' => $validated['purpose'],
+                'departure_date' => $validated['departure_date'],
+                'return_date' => $validated['return_date'],
+                'advance_payment' => $validated['advance_payment'] ?? 0,
+                'status' => TravelRequest::STATUS_PENDING,
             ]);
+
+            // 経費明細を作成
+            foreach ($validated['expenses'] as $expenseData) {
+                TravelExpense::create([
+                    'travel_request_id' => $travelRequest->id,
+                    'date' => $expenseData['date'],
+                    'description' => $expenseData['description'],
+                    'category' => $expenseData['category'],
+                    'cash' => $expenseData['cash'] ?? 0,
+                    'ticket' => $expenseData['ticket'] ?? 0,
+                    'remarks' => $expenseData['remarks'] ?? null,
+                ]);
+            }
+
+            // 小計と精算金額を計算
+            $travelRequest->calculateSubtotal();
+
+            // 承認フローを作成（部署責任者 → 業務部）
+            $this->createTravelApprovalFlow($travelRequest);
+        });
+
+        // トランザクション外でExcel生成とメール送信
+        try {
+            $this->generateExcelAndSendEmail($travelRequest);
+        } catch (\Exception $e) {
+            \Log::error('Excel生成・メール送信エラー: ' . $e->getMessage());
+            return redirect()->route('travel-requests.index')
+                ->with('warning', '出張申請は登録されましたが、メール送信でエラーが発生しました。');
         }
-
-        // 小計と精算金額を計算
-        $travelRequest->calculateSubtotal();
-
-        // 承認フローを作成（部署責任者 → 業務部）
-        $this->createTravelApprovalFlow($travelRequest);
-
-        // Excel生成とメール送信（通知のみ、Excelは添付しない）
-        $this->generateExcelAndSendEmail($travelRequest);
 
         return redirect()->route('travel-requests.index')
             ->with('success', '出張申請を送信しました。業務部に通知を送信しました。');

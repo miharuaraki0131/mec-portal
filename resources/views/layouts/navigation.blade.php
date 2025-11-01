@@ -19,8 +19,66 @@
                     </x-nav-link>
                 </div>
 
-                <!-- External Links -->
-                <div class="hidden md:flex items-center space-x-3 sm:ms-6 border-l border-gray-200 pl-6">
+                <!-- External Links - Icon only (md to lg) -->
+                <div class="hidden md:flex lg:hidden items-center space-x-2 sm:ms-6 border-l border-gray-200 pl-4">
+                    <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="Gmail">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </a>
+                    <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="ドライブ">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h12a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
+                        </svg>
+                    </a>
+                    <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="Meet">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </a>
+                    <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="カレンダー">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </a>
+                    <a href="https://www.chatwork.com" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="チャットワーク">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </a>
+                    <a href="https://zoom.us" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="Zoom">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </a>
+                    <a href="https://atnd-awj.ak4.jp/ja/login?next=%2Fja%2Fmypage%2Fpunch" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="AKASHI（勤怠）">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </a>
+                    <a href="https://s-paycial.shinwart.com/nmec/Login/Index" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="SS-PAYCIAL（給与）">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </a>
+                    <a href="https://x.com/nipponmechatron" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-600 hover:text-gray-900 p-2 rounded hover:bg-gray-50 transition-colors" title="X">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- External Links - Text (lg and above) -->
+                <div class="hidden lg:flex items-center space-x-3 sm:ms-6 border-l border-gray-200 pl-6">
                     <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" 
                        class="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-50 transition-colors" title="Gmail">
                         Gmail
@@ -64,7 +122,7 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-base leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
@@ -139,15 +197,15 @@
         <div class="pt-2 pb-3 border-t border-gray-200">
             <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">外部リンク</div>
             <div class="px-4 py-2 grid grid-cols-3 gap-2">
-                <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">Gmail</a>
-                <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">ドライブ</a>
-                <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">Meet</a>
-                <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">カレンダー</a>
-                <a href="https://www.chatwork.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">チャットワーク</a>
-                <a href="https://zoom.us" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">Zoom</a>
-                <a href="https://akashi.midworks.net" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">AKASHI</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">SS-PAYCIAL</a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:text-gray-900">X</a>
+                <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">Gmail</a>
+                <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">ドライブ</a>
+                <a href="https://meet.google.com" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">Meet</a>
+                <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">カレンダー</a>
+                <a href="https://www.chatwork.com" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">チャットワーク</a>
+                <a href="https://zoom.us" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">Zoom</a>
+                <a href="https://akashi.midworks.net" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">AKASHI</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">SS-PAYCIAL</a>
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="text-base text-gray-600 hover:text-gray-900">X</a>
             </div>
         </div>
 
@@ -155,7 +213,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

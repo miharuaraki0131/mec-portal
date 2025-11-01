@@ -6,11 +6,11 @@
             </h2>
             <div class="flex gap-3">
                 <a href="{{ route('admin.masters.index') }}" 
-                   class="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                   class="text-gray-600 hover:text-gray-900 text-base font-medium">
                     ← マスタ管理に戻る
                 </a>
                 <a href="{{ route('admin.divisions.create') }}" 
-                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                     新規登録
                 </a>
             </div>
@@ -77,19 +77,19 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach($divisions as $division)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $division->name }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $division->parent ? $division->parent->name : '-' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $division->manager ? $division->manager->name : '-' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                             {{ $division->users->count() }}名
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-base font-medium">
                                             <div class="flex justify-end gap-2">
                                                 <a href="{{ route('admin.divisions.edit', $division->id) }}" 
                                                    class="text-indigo-600 hover:text-indigo-900">編集</a>

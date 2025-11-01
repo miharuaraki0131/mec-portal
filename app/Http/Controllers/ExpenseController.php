@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExpenseRequest;
+use App\Http\Requests\TransportationExpenseRequest;
 use App\Models\Expense;
 use App\Models\Division;
 use App\Models\User;
@@ -9,6 +11,7 @@ use App\Models\WorkflowApproval;
 use App\Mail\ExpenseNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -74,41 +77,48 @@ class ExpenseController extends Controller
     {
         // 交通費申請の場合
         if ($request->has('is_transportation') && $request->is_transportation) {
-            return $this->storeTransportation($request);
+            $validatedRequest = TransportationExpenseRequest::createFrom($request);
+            $validatedRequest->validateResolved();
+            return $this->storeTransportation($validatedRequest);
         }
 
         // 通常の経費申請
-        $validated = $request->validate([
-            'date' => 'required|date',
-            'category' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'description' => 'required|string|max:255',
-            'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', // 5MB
-        ]);
+        $validatedRequest = ExpenseRequest::createFrom($request);
+        $validatedRequest->validateResolved();
+        $validated = $validatedRequest->validated();
 
-        // 領収書のアップロード
-        $receiptPath = null;
-        if ($request->hasFile('receipt')) {
-            $file = $request->file('receipt');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $receiptPath = $file->storeAs('receipts', $fileName, 'public');
+        // トランザクション処理
+        DB::transaction(function () use ($validated, $request, &$expense) {
+            // 領収書のアップロード
+            $receiptPath = null;
+            if ($request->hasFile('receipt')) {
+                $file = $request->file('receipt');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $receiptPath = $file->storeAs('receipts', $fileName, 'public');
+            }
+
+            $expense = Expense::create([
+                'user_id' => Auth::id(),
+                'date' => $validated['date'],
+                'category' => $validated['category'],
+                'amount' => $validated['amount'],
+                'description' => $validated['description'],
+                'receipt_path' => $receiptPath,
+                'status' => Expense::STATUS_PENDING,
+            ]);
+
+            // 承認フローを作成（業務部）
+            $this->createExpenseApprovalFlow($expense);
+        });
+
+        // トランザクション外でExcel生成とメール送信（ファイル操作は例外時も処理完了させたい）
+        try {
+            $this->generateExcelAndSendEmail($expense);
+        } catch (\Exception $e) {
+            \Log::error('Excel生成・メール送信エラー: ' . $e->getMessage());
+            return redirect()->route('expenses.index')
+                ->with('warning', '経費申請は登録されましたが、メール送信でエラーが発生しました。');
         }
-
-        $expense = Expense::create([
-            'user_id' => Auth::id(),
-            'date' => $validated['date'],
-            'category' => $validated['category'],
-            'amount' => $validated['amount'],
-            'description' => $validated['description'],
-            'receipt_path' => $receiptPath,
-            'status' => Expense::STATUS_PENDING,
-        ]);
-
-        // 承認フローを作成（業務部）
-        $this->createExpenseApprovalFlow($expense);
-
-        // Excel生成とメール送信（通知のみ、Excelは添付しない）
-        $this->generateExcelAndSendEmail($expense);
 
         return redirect()->route('expenses.index')
             ->with('success', '経費申請を送信しました。業務部に通知を送信しました。');
@@ -117,65 +127,62 @@ class ExpenseController extends Controller
     /**
      * 交通費申請を保存
      */
-    private function storeTransportation(Request $request)
+    private function storeTransportation(TransportationExpenseRequest $request)
     {
-        $validated = $request->validate([
-            'period_from' => 'required|date',
-            'period_to' => 'required|date|after_or_equal:period_from',
-            'items' => 'required|array|min:1',
-            'items.*.date' => 'required|date',
-            'items.*.business' => 'required|string|max:255',
-            'items.*.vehicle' => 'required|string|max:255',
-            'items.*.route_from' => 'required|string|max:255',
-            'items.*.route_via' => 'nullable|string|max:255',
-            'items.*.route_to' => 'required|string|max:255',
-            'items.*.transportation_type' => 'required|in:片道,往復',
-            'items.*.amount' => 'required|numeric|min:0',
-        ]);
+        $validated = $request->validated();
 
-        // 親レコード（交通費申請）を作成
-        $parentExpense = Expense::create([
-            'user_id' => Auth::id(),
-            'parent_id' => null,
-            'category' => '交通費',
-            'is_transportation' => true,
-            'period_from' => $validated['period_from'],
-            'period_to' => $validated['period_to'],
-            'date' => $validated['period_from'], // 申請日の基準
-            'amount' => 0, // 子レコードの合計で計算
-            'description' => '交通費請求明細書',
-            'status' => Expense::STATUS_PENDING,
-        ]);
-
-        // 子レコード（明細）を作成
-        $totalAmount = 0;
-        foreach ($validated['items'] as $item) {
-            $totalAmount += $item['amount'];
-            Expense::create([
+        // トランザクション処理
+        DB::transaction(function () use ($validated, &$parentExpense) {
+            // 親レコード（交通費申請）を作成
+            $parentExpense = Expense::create([
                 'user_id' => Auth::id(),
-                'parent_id' => $parentExpense->id,
+                'parent_id' => null,
                 'category' => '交通費',
-                'is_transportation' => false,
-                'date' => $item['date'],
-                'amount' => $item['amount'],
-                'description' => $item['business'],
-                'vehicle' => $item['vehicle'],
-                'route_from' => $item['route_from'],
-                'route_via' => $item['route_via'] ?? null,
-                'route_to' => $item['route_to'],
-                'transportation_type' => $item['transportation_type'],
+                'is_transportation' => true,
+                'period_from' => $validated['period_from'],
+                'period_to' => $validated['period_to'],
+                'date' => $validated['period_from'], // 申請日の基準
+                'amount' => 0, // 子レコードの合計で計算
+                'description' => '交通費請求明細書',
                 'status' => Expense::STATUS_PENDING,
             ]);
+
+            // 子レコード（明細）を作成
+            $totalAmount = 0;
+            foreach ($validated['items'] as $item) {
+                $totalAmount += $item['amount'];
+                Expense::create([
+                    'user_id' => Auth::id(),
+                    'parent_id' => $parentExpense->id,
+                    'category' => '交通費',
+                    'is_transportation' => false,
+                    'date' => $item['date'],
+                    'amount' => $item['amount'],
+                    'description' => $item['business'],
+                    'vehicle' => $item['vehicle'],
+                    'route_from' => $item['route_from'],
+                    'route_via' => $item['route_via'] ?? null,
+                    'route_to' => $item['route_to'],
+                    'transportation_type' => $item['transportation_type'],
+                    'status' => Expense::STATUS_PENDING,
+                ]);
+            }
+
+            // 親レコードの合計金額を更新
+            $parentExpense->update(['amount' => $totalAmount]);
+
+            // 承認フローを作成（業務部）
+            $this->createExpenseApprovalFlow($parentExpense);
+        });
+
+        // トランザクション外でExcel生成とメール送信
+        try {
+            $this->generateExcelAndSendEmail($parentExpense);
+        } catch (\Exception $e) {
+            \Log::error('Excel生成・メール送信エラー: ' . $e->getMessage());
+            return redirect()->route('expenses.index')
+                ->with('warning', '交通費申請は登録されましたが、メール送信でエラーが発生しました。');
         }
-
-        // 親レコードの合計金額を更新
-        $parentExpense->update(['amount' => $totalAmount]);
-
-        // 承認フローを作成（業務部）
-        $this->createExpenseApprovalFlow($parentExpense);
-
-        // Excel生成とメール送信（通知のみ、Excelは添付しない）
-        $this->generateExcelAndSendEmail($parentExpense);
 
         return redirect()->route('expenses.index')
             ->with('success', '交通費申請を送信しました。業務部に通知を送信しました。');
@@ -212,17 +219,11 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Expense $expense)
+    public function update(ExpenseRequest $request, Expense $expense)
     {
         $this->authorize('update', $expense);
 
-        $validated = $request->validate([
-            'date' => 'required|date',
-            'category' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'description' => 'required|string|max:255',
-            'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-        ]);
+        $validated = $request->validated();
 
         // 領収書の更新
         if ($request->hasFile('receipt')) {

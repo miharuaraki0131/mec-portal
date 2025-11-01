@@ -14,7 +14,7 @@
 
                         <!-- 社員コード -->
                         <div class="mb-4">
-                            <label for="user_code" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="user_code" class="block text-base font-medium text-gray-700 mb-1">
                                 社員コード <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -24,13 +24,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('user_code') border-red-500 @enderror">
                             @error('user_code')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 氏名 -->
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="name" class="block text-base font-medium text-gray-700 mb-1">
                                 氏名 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" 
@@ -40,13 +40,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('name') border-red-500 @enderror">
                             @error('name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- メールアドレス -->
                         <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="email" class="block text-base font-medium text-gray-700 mb-1">
                                 メールアドレス <span class="text-red-500">*</span>
                             </label>
                             <input type="email" 
@@ -56,13 +56,13 @@
                                    required
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('email') border-red-500 @enderror">
                             @error('email')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- パスワード -->
                         <div class="mb-4">
-                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="password" class="block text-base font-medium text-gray-700 mb-1">
                                 パスワード <span class="text-red-500">*</span>
                             </label>
                             <input type="password" 
@@ -72,13 +72,13 @@
                                    minlength="8"
                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('password') border-red-500 @enderror">
                             @error('password')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- パスワード確認 -->
                         <div class="mb-4">
-                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="password_confirmation" class="block text-base font-medium text-gray-700 mb-1">
                                 パスワード（確認） <span class="text-red-500">*</span>
                             </label>
                             <input type="password" 
@@ -91,7 +91,7 @@
 
                         <!-- ロール -->
                         <div class="mb-4">
-                            <label for="role" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="role" class="block text-base font-medium text-gray-700 mb-1">
                                 ロール <span class="text-red-500">*</span>
                             </label>
                             <select id="role" 
@@ -103,13 +103,13 @@
                                 <option value="2" {{ old('role') == '2' ? 'selected' : '' }}>部署責任者</option>
                             </select>
                             @error('role')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- 所属部署 -->
                         <div class="mb-6">
-                            <label for="division_id" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="division_id" class="block text-base font-medium text-gray-700 mb-1">
                                 所属部署
                             </label>
                             <select id="division_id" 
@@ -133,7 +133,7 @@
                                 @endforeach
                             </select>
                             @error('division_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
