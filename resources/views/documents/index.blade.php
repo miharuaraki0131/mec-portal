@@ -15,18 +15,32 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
 
-            <!-- フィルター -->
-            <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
-                <form method="GET" action="{{ route('documents.index') }}" class="flex flex-wrap gap-4">
+            <!-- 検索・フィルター -->
+            <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                <form method="GET" action="{{ route('documents.index') }}" class="space-y-4">
                     <div>
-                        <label for="division_id" class="block text-base font-medium text-gray-700 mb-1">部署</label>
-                        <select name="division_id" id="division_id" class="rounded-lg border-gray-300 text-base">
+                        <label for="search" class="block text-base font-medium text-gray-700 mb-2">
+                            検索
+                        </label>
+                        <div class="flex gap-2">
+                            <input type="text" 
+                                   id="search" 
+                                   name="search" 
+                                   value="{{ request('search') }}"
+                                   placeholder="タイトルやカテゴリを検索..."
+                                   class="flex-1 rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base">
+                            <button type="submit" 
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg text-base font-medium transition-colors">
+                                検索
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <div>
+                            <label for="division_id" class="block text-base font-medium text-gray-700 mb-1">部署</label>
+                            <select name="division_id" id="division_id" class="rounded-lg border-gray-300 text-base">
                             <option value="">すべて</option>
                             <option value="all" {{ request('division_id') == 'all' ? 'selected' : '' }}>全般</option>
                             @foreach($divisions as $parentDivision)

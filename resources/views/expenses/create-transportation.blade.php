@@ -144,6 +144,32 @@
                             </div>
                         </div>
 
+                        <!-- 承認者 -->
+                        <div class="mb-6">
+                            <label for="approver_type" class="block text-base font-medium text-gray-700 mb-1">
+                                承認者 <span class="text-red-500">*</span>
+                            </label>
+                            <select id="approver_type" 
+                                    name="approver_type" 
+                                    required
+                                    class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-200 @error('approver_type') border-red-500 @enderror">
+                                <option value="">選択してください</option>
+                                <option value="business" {{ old('approver_type') === 'business' ? 'selected' : '' }}>業務部</option>
+                                @if($divisions->count() > 0)
+                                    <optgroup label="部門管理者">
+                                        @foreach($divisions as $division)
+                                            <option value="manager_{{ $division->id }}" {{ old('approver_type') === 'manager_' . $division->id ? 'selected' : '' }}>
+                                                {{ $division->full_name }} - {{ $division->manager->name ?? '' }}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+                                @endif
+                            </select>
+                            @error('approver_type')
+                                <p class="mt-1 text-base text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- ボタン -->
                         <div class="flex justify-end gap-3">
                             <a href="{{ route('expenses.menu') }}" 

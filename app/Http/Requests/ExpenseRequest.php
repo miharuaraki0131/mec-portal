@@ -27,6 +27,7 @@ class ExpenseRequest extends FormRequest
             'amount' => ['required', 'numeric', 'min:0'],
             'description' => ['required', 'string', 'max:255'],
             'receipt' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'], // 5MB
+            'approver_type' => ['required', 'string'],
         ];
     }
 }

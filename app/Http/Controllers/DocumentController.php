@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\Division;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
+    use LogsActivity;
     /**
      * Display a listing of the resource.
      */
@@ -17,6 +19,11 @@ class DocumentController extends Controller
     {
         $query = Document::with('uploadedBy', 'division')
             ->latest();
+
+        // 全文検索
+        if ($request->has('search') && $request->search) {
+            $query->search($request->search);
+        }
 
         // 部署でフィルタリング
         if ($request->has('division_id')) {
@@ -38,7 +45,7 @@ class DocumentController extends Controller
             $query->where('file_type', $request->file_type);
         }
 
-        $documents = $query->paginate(12);
+        $documents = $query->paginate(12)->withQueryString();
 
         // 部署一覧を取得（フィルタ用）
         $divisions = Division::getHierarchical();
@@ -172,9 +179,15 @@ class DocumentController extends Controller
         $this->authorize('delete', $document);
 
         // ファイルを削除
+        // 削除前のデータを保存
+        $deletedData = $document->toArray();
+
         Storage::disk('public')->delete($document->file_path);
 
         $document->delete();
+
+        // ログ記録
+        $this->logDeletion('document', $document->id, $deletedData);
 
         return redirect()->route('documents.index')
             ->with('success', '資料を削除しました。');

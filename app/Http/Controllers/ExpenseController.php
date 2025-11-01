@@ -9,6 +9,7 @@ use App\Models\Division;
 use App\Models\User;
 use App\Models\WorkflowApproval;
 use App\Mail\ExpenseNotification;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,7 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class ExpenseController extends Controller
 {
+    use LogsActivity;
     /**
      * Display a listing of the resource.
      */
@@ -52,9 +54,12 @@ class ExpenseController extends Controller
      */
     public function create(Request $request)
     {
+        // 部署リストを取得（部門管理者を選択できるように）
+        $divisions = Division::with('manager')->whereNotNull('manager_id')->orderBy('name')->get();
+        
         // 交通費申請の場合、専用フォームを表示
         if ($request->has('type') && $request->type === 'transportation') {
-            return view('expenses.create-transportation');
+            return view('expenses.create-transportation', compact('divisions'));
         }
 
         // 申請タイプに応じて費目を初期設定
@@ -67,7 +72,7 @@ class ExpenseController extends Controller
             };
         }
 
-        return view('expenses.create', compact('category'));
+        return view('expenses.create', compact('category', 'divisions'));
     }
 
     /**
@@ -77,15 +82,12 @@ class ExpenseController extends Controller
     {
         // 交通費申請の場合
         if ($request->has('is_transportation') && $request->is_transportation) {
-            $validatedRequest = TransportationExpenseRequest::createFrom($request);
-            $validatedRequest->validateResolved();
-            return $this->storeTransportation($validatedRequest);
+            $validated = $request->validate((new TransportationExpenseRequest())->rules());
+            return $this->storeTransportation($request, $validated);
         }
 
         // 通常の経費申請
-        $validatedRequest = ExpenseRequest::createFrom($request);
-        $validatedRequest->validateResolved();
-        $validated = $validatedRequest->validated();
+        $validated = $request->validate((new ExpenseRequest())->rules());
 
         // トランザクション処理
         DB::transaction(function () use ($validated, $request, &$expense) {
@@ -97,6 +99,18 @@ class ExpenseController extends Controller
                 $receiptPath = $file->storeAs('receipts', $fileName, 'public');
             }
 
+            // approver_typeを処理
+            $approverType = 'business';
+            $divisionId = null;
+            if (isset($validated['approver_type'])) {
+                if ($validated['approver_type'] === 'business') {
+                    $approverType = 'business';
+                } elseif (str_starts_with($validated['approver_type'], 'manager_')) {
+                    $approverType = 'manager';
+                    $divisionId = (int) str_replace('manager_', '', $validated['approver_type']);
+                }
+            }
+
             $expense = Expense::create([
                 'user_id' => Auth::id(),
                 'date' => $validated['date'],
@@ -105,10 +119,11 @@ class ExpenseController extends Controller
                 'description' => $validated['description'],
                 'receipt_path' => $receiptPath,
                 'status' => Expense::STATUS_PENDING,
+                'approver_type' => $approverType,
             ]);
 
-            // 承認フローを作成（業務部）
-            $this->createExpenseApprovalFlow($expense);
+            // 承認フローを作成
+            $this->createExpenseApprovalFlow($expense, $approverType, $divisionId);
         });
 
         // トランザクション外でExcel生成とメール送信（ファイル操作は例外時も処理完了させたい）
@@ -127,12 +142,23 @@ class ExpenseController extends Controller
     /**
      * 交通費申請を保存
      */
-    private function storeTransportation(TransportationExpenseRequest $request)
+    private function storeTransportation(Request $request, array $validated)
     {
-        $validated = $request->validated();
+
+        // approver_typeを処理
+        $approverType = 'business';
+        $divisionId = null;
+        if (isset($validated['approver_type'])) {
+            if ($validated['approver_type'] === 'business') {
+                $approverType = 'business';
+            } elseif (str_starts_with($validated['approver_type'], 'manager_')) {
+                $approverType = 'manager';
+                $divisionId = (int) str_replace('manager_', '', $validated['approver_type']);
+            }
+        }
 
         // トランザクション処理
-        DB::transaction(function () use ($validated, &$parentExpense) {
+        DB::transaction(function () use ($validated, &$parentExpense, $approverType) {
             // 親レコード（交通費申請）を作成
             $parentExpense = Expense::create([
                 'user_id' => Auth::id(),
@@ -145,6 +171,7 @@ class ExpenseController extends Controller
                 'amount' => 0, // 子レコードの合計で計算
                 'description' => '交通費請求明細書',
                 'status' => Expense::STATUS_PENDING,
+                'approver_type' => $approverType,
             ]);
 
             // 子レコード（明細）を作成
@@ -170,10 +197,13 @@ class ExpenseController extends Controller
 
             // 親レコードの合計金額を更新
             $parentExpense->update(['amount' => $totalAmount]);
-
-            // 承認フローを作成（業務部）
-            $this->createExpenseApprovalFlow($parentExpense);
         });
+
+        // トランザクション外で承認フローを作成
+        $this->createExpenseApprovalFlow($parentExpense, $approverType, $divisionId);
+
+        // ログ記録
+        $this->logCreation('expense', $parentExpense->id, $parentExpense->toArray());
 
         // トランザクション外でExcel生成とメール送信
         try {
@@ -270,12 +300,19 @@ class ExpenseController extends Controller
     {
         $this->authorize('delete', $expense);
 
+        // 削除前のデータを保存
+        $deletedData = $expense->toArray();
+        $expenseId = $expense->id;
+        
         // 領収書ファイルを削除
         if ($expense->receipt_path) {
             Storage::disk('public')->delete($expense->receipt_path);
         }
 
         $expense->delete();
+
+        // ログ記録（削除後なのでIDは事前に保存）
+        $this->logDeletion('expense', $expenseId, $deletedData);
 
         return redirect()->route('expenses.index')
             ->with('success', '経費申請を削除しました。');
@@ -626,33 +663,49 @@ class ExpenseController extends Controller
     }
 
     /**
-     * 経費申請の承認フローを作成（業務部）
+     * 経費申請の承認フローを作成
      */
-    private function createExpenseApprovalFlow(Expense $expense): void
+    private function createExpenseApprovalFlow(Expense $expense, string $approverType, ?int $divisionId = null): void
     {
-        $businessDivision = Division::where('name', '業務部')->whereNull('parent_id')->first();
-        if (!$businessDivision) {
-            return;
-        }
+        if ($approverType === 'business') {
+            // 業務部のユーザー全員に承認権限を付与
+            $businessDivision = Division::where('name', '業務部')->whereNull('parent_id')->first();
+            if (!$businessDivision) {
+                return;
+            }
 
-        // 業務部のユーザー全員に承認権限を付与
-        $businessUsers = User::where('delete_flg', 0)
-            ->where(function ($query) use ($businessDivision) {
-                $query->where('division_id', $businessDivision->id)
-                    ->orWhereIn('division_id', $businessDivision->children->pluck('id'));
-            })
-            ->get();
+            $businessUsers = User::where('delete_flg', 0)
+                ->where(function ($query) use ($businessDivision) {
+                    $query->where('division_id', $businessDivision->id)
+                        ->orWhereIn('division_id', $businessDivision->children->pluck('id'));
+                })
+                ->get();
 
-        foreach ($businessUsers as $businessUser) {
-            WorkflowApproval::create([
-                'request_type' => 'expense',
-                'request_id' => $expense->id,
-                'applicant_id' => $expense->user_id,
-                'approval_order' => 1,
-                'approver_id' => $businessUser->id,
-                'is_final_approval' => 1,
-                'status' => WorkflowApproval::STATUS_PENDING,
-            ]);
+            foreach ($businessUsers as $businessUser) {
+                WorkflowApproval::create([
+                    'request_type' => 'expense',
+                    'request_id' => $expense->id,
+                    'applicant_id' => $expense->user_id,
+                    'approval_order' => 1,
+                    'approver_id' => $businessUser->id,
+                    'is_final_approval' => 1,
+                    'status' => WorkflowApproval::STATUS_PENDING,
+                ]);
+            }
+        } elseif ($approverType === 'manager' && $divisionId) {
+            // 部門管理者に承認権限を付与
+            $division = Division::find($divisionId);
+            if ($division && $division->manager_id) {
+                WorkflowApproval::create([
+                    'request_type' => 'expense',
+                    'request_id' => $expense->id,
+                    'applicant_id' => $expense->user_id,
+                    'approval_order' => 1,
+                    'approver_id' => $division->manager_id,
+                    'is_final_approval' => 1,
+                    'status' => WorkflowApproval::STATUS_PENDING,
+                ]);
+            }
         }
     }
 }

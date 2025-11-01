@@ -13,15 +13,38 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::with('postedBy')
+        $query = News::with('postedBy')
             ->published()
-            ->priority()
-            ->latest('published_at')
-            ->paginate(10);
+            ->priority();
 
-        return view('news.index', compact('news'));
+        // 全文検索
+        if ($request->has('search') && $request->search) {
+            $query->search($request->search);
+        }
+
+        // カテゴリでフィルタリング
+        if ($request->has('category') && $request->category) {
+            $query->where('category', $request->category);
+        }
+
+        // 重要度でフィルタリング
+        if ($request->has('priority') && $request->priority !== '') {
+            $query->where('priority', $request->priority);
+        }
+
+        $news = $query->latest('published_at')->paginate(10)->withQueryString();
+
+        // カテゴリ一覧を取得（フィルタ用）
+        $categories = News::published()
+            ->whereNotNull('category')
+            ->distinct()
+            ->pluck('category')
+            ->sort()
+            ->values();
+
+        return view('news.index', compact('news', 'categories'));
     }
 
     /**
@@ -55,7 +78,10 @@ class NewsController extends Controller
         $validated['published_at'] = $validated['published_at'] ?? now();
         $validated['image_path'] = $imagePath;
 
-        News::create($validated);
+        $news = News::create($validated);
+
+        // ログ記録
+        $this->logCreation('news', $news->id, $news->toArray());
 
         return redirect()->route('news.index')
             ->with('success', 'お知らせを投稿しました。');
@@ -67,6 +93,9 @@ class NewsController extends Controller
     public function show(News $news)
     {
         $news->incrementViewCount();
+        
+        // リレーションを事前読み込み（N+1問題の回避）
+        $news->load('postedBy');
         
         return view('news.show', compact('news'));
     }
@@ -102,7 +131,11 @@ class NewsController extends Controller
             $validated['image_path'] = $file->storeAs('news', $fileName, 'public');
         }
 
+        $oldData = $news->toArray();
         $news->update($validated);
+
+        // ログ記録
+        $this->logUpdate('news', $news->id, $oldData, $news->fresh()->toArray());
 
         return redirect()->route('news.index')
             ->with('success', 'お知らせを更新しました。');
@@ -115,12 +148,18 @@ class NewsController extends Controller
     {
         $this->authorize('delete', $news);
 
+        // 削除前のデータを保存
+        $deletedData = $news->toArray();
+
         // 画像を削除
         if ($news->image_path) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($news->image_path);
         }
 
         $news->delete();
+
+        // ログ記録
+        $this->logDeletion('news', $news->id, $deletedData);
 
         return redirect()->route('news.index')
             ->with('success', 'お知らせを削除しました。');

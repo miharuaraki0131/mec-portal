@@ -80,4 +80,18 @@ class Document extends Model
     {
         return $this->division ? $this->division->name : '全般';
     }
+
+    /**
+     * 全文検索（タイトル・カテゴリから検索）
+     */
+    public function scopeSearch($query, ?string $keyword)
+    {
+        if ($keyword) {
+            return $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', '%' . $keyword . '%')
+                  ->orWhere('category', 'like', '%' . $keyword . '%');
+            });
+        }
+        return $query;
+    }
 }

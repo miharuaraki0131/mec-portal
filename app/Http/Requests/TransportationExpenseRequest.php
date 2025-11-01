@@ -33,6 +33,7 @@ class TransportationExpenseRequest extends FormRequest
             'items.*.route_to' => ['required', 'string', 'max:255'],
             'items.*.transportation_type' => ['required', 'in:片道,往復'],
             'items.*.amount' => ['required', 'numeric', 'min:0'],
+            'approver_type' => ['required', 'string'],
         ];
     }
 }

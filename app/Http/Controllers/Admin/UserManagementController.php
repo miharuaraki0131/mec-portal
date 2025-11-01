@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Division;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserManagementController extends Controller
 {
+    use LogsActivity;
     /**
      * Display a listing of the resource.
      */
@@ -160,8 +162,14 @@ class UserManagementController extends Controller
             abort(403);
         }
 
+        // 削除前のデータを保存
+        $deletedData = $user->toArray();
+
         // 論理削除
         $user->update(['delete_flg' => 1]);
+
+        // ログ記録
+        $this->logDeletion('user', $user->id, $deletedData);
 
         return redirect()->route('admin.users.index')
             ->with('success', 'ユーザーを削除しました。');

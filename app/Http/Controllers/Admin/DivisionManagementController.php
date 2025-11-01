@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Division;
 use App\Models\User;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 
 class DivisionManagementController extends Controller
 {
+    use LogsActivity;
     /**
      * Display a listing of the resource.
      */
@@ -145,7 +147,13 @@ class DivisionManagementController extends Controller
                 ->with('error', '所属ユーザーが存在するため削除できません。先にユーザーの所属を変更してください。');
         }
 
+        // 削除前のデータを保存
+        $deletedData = $division->toArray();
+        
         $division->delete();
+
+        // ログ記録
+        $this->logDeletion('division', $division->id, $deletedData);
 
         return redirect()->route('admin.divisions.index')
             ->with('success', '部署を削除しました。');

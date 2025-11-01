@@ -64,8 +64,10 @@
                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
                                 編集
                             </a>
-                            <form method="POST" action="{{ route('news.destroy', $news->id) }}" 
-                                  onsubmit="return confirm('このお知らせを削除しますか？');">
+                            <form method="POST" 
+                                  action="{{ route('news.destroy', $news->id) }}"
+                                  data-confirm="このお知らせを削除しますか？"
+                                  data-confirm-title="お知らせの削除">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 

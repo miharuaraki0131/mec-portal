@@ -29,6 +29,27 @@
 
             <!-- Page Content -->
             <main>
+                <!-- エラーメッセージ表示エリア -->
+                @if(session('error'))
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                        <x-error-message type="error">{{ session('error') }}</x-error-message>
+                    </div>
+                @endif
+
+                <!-- 警告メッセージ表示エリア -->
+                @if(session('warning'))
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                        <x-error-message type="warning">{{ session('warning') }}</x-error-message>
+                    </div>
+                @endif
+
+                <!-- 成功メッセージ表示エリア -->
+                @if(session('success'))
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                        <x-error-message type="success">{{ session('success') }}</x-error-message>
+                    </div>
+                @endif
+
                 {{ $slot }}
             </main>
         </div>

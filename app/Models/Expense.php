@@ -30,6 +30,7 @@ class Expense extends Model
         'receipt_path',
         'excel_path',
         'status',
+        'approver_type',
     ];
 
     protected $casts = [

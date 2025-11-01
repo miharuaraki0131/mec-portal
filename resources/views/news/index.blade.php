@@ -15,11 +15,64 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
+            <!-- 検索・フィルター -->
+            <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                <form method="GET" action="{{ route('news.index') }}" class="space-y-4">
+                    <div>
+                        <label for="search" class="block text-base font-medium text-gray-700 mb-2">
+                            検索
+                        </label>
+                        <div class="flex gap-2">
+                            <input type="text" 
+                                   id="search" 
+                                   name="search" 
+                                   value="{{ request('search') }}"
+                                   placeholder="タイトルや内容を検索..."
+                                   class="flex-1 rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base">
+                            <button type="submit" 
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg text-base font-medium transition-colors">
+                                検索
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <div>
+                            <label for="category" class="block text-base font-medium text-gray-700 mb-1">カテゴリ</label>
+                            <select name="category" id="category" class="rounded-lg border-gray-300 text-base">
+                                <option value="">すべて</option>
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
+                                        {{ $cat }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label for="priority" class="block text-base font-medium text-gray-700 mb-1">重要度</label>
+                            <select name="priority" id="priority" class="rounded-lg border-gray-300 text-base">
+                                <option value="">すべて</option>
+                                <option value="1" {{ request('priority') === '1' ? 'selected' : '' }}>重要</option>
+                                <option value="0" {{ request('priority') === '0' ? 'selected' : '' }}>通常</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit" 
+                                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-colors">
+                                フィルター適用
+                            </button>
+                        </div>
+                        @if(request('search') || request('category') || request('priority') !== '')
+                            <div class="flex items-end">
+                                <a href="{{ route('news.index') }}" 
+                                   class="text-gray-600 hover:text-gray-800 text-base underline">
+                                    クリア
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </form>
+            </div>
 
             @if($news->count() > 0)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

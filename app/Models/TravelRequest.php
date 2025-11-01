@@ -26,6 +26,7 @@ class TravelRequest extends Model
         'status',
         'approved_at',
         'excel_path',
+        'approver_type',
     ];
 
     protected $casts = [

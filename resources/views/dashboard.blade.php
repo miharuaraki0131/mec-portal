@@ -7,6 +7,32 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- 承認待ち通知（承認権限がある場合のみ表示） -->
+            @if(isset($hasApprovalPermission) && $hasApprovalPermission && isset($pendingApprovalCount) && $pendingApprovalCount > 0)
+                <a href="{{ route('approvals.index') }}" class="bg-red-50 border-2 border-red-300 overflow-hidden shadow-sm sm:rounded-lg mb-6 hover:shadow-md transition-shadow block">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-shrink-0 bg-red-100 rounded-full p-3">
+                                    <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-red-900">承認待ちがあります</h3>
+                                    <p class="text-base text-red-700">{{ $pendingApprovalCount }}件の承認待ち申請があります</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-red-600 text-white text-base font-semibold px-4 py-2 rounded-lg">
+                                    確認する →
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            @endif
+
             <!-- FAQ検索フォーム -->
             <a href="{{ route('faqs.index') }}" class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6 hover:shadow-md transition-shadow block">
                 <div class="p-6">

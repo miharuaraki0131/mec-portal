@@ -60,4 +60,20 @@ class News extends Model
     {
         $this->increment('view_count');
     }
+
+    /**
+     * 全文検索（タイトル・内容から検索）
+     */
+    public function scopeSearch($query, ?string $keyword)
+    {
+        if ($keyword) {
+            // HTMLタグを除去して検索
+            return $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', '%' . $keyword . '%')
+                  ->orWhere('content', 'like', '%' . $keyword . '%')
+                  ->orWhere('category', 'like', '%' . $keyword . '%');
+            });
+        }
+        return $query;
+    }
 }

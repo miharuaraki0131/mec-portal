@@ -1,4 +1,7 @@
 import './bootstrap';
+import './loading';
+import './confirm-dialog';
+import './notifications';
 
 import Alpine from 'alpinejs';
 

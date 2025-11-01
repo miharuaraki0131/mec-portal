@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
 
     // 承認
     Route::get('approvals', [\App\Http\Controllers\ApprovalController::class, 'index'])->name('approvals.index');
+    Route::get('api/pending-approvals-count', [\App\Http\Controllers\ApprovalController::class, 'getPendingCount'])->name('api.pending-approvals-count');
     Route::post('approvals/{approval}/approve', [\App\Http\Controllers\ApprovalController::class, 'approve'])->name('approvals.approve');
     Route::post('approvals/{approval}/reject', [\App\Http\Controllers\ApprovalController::class, 'reject'])->name('approvals.reject');
 
