@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
@@ -45,9 +45,23 @@ Route::middleware('auth')->group(function () {
     // 経費精算
     Route::get('expenses/menu', [\App\Http\Controllers\ExpenseMenuController::class, 'index'])->name('expenses.menu');
     Route::resource('expenses', \App\Http\Controllers\ExpenseController::class);
+    Route::get('expenses/{expense}/download-excel', [\App\Http\Controllers\ExpenseController::class, 'downloadExcel'])->name('expenses.download-excel');
 
     // 出張申請
     Route::resource('travel-requests', \App\Http\Controllers\TravelRequestController::class);
+    Route::get('travel-requests/{travelRequest}/download-excel', [\App\Http\Controllers\TravelRequestController::class, 'downloadExcel'])->name('travel-requests.download-excel');
+
+    // 承認
+    Route::get('approvals', [\App\Http\Controllers\ApprovalController::class, 'index'])->name('approvals.index');
+    Route::post('approvals/{approval}/approve', [\App\Http\Controllers\ApprovalController::class, 'approve'])->name('approvals.approve');
+    Route::post('approvals/{approval}/reject', [\App\Http\Controllers\ApprovalController::class, 'reject'])->name('approvals.reject');
+
+    // マスタ管理（管理者のみ）
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('masters', [\App\Http\Controllers\Admin\MasterController::class, 'index'])->name('masters.index');
+        Route::resource('users', \App\Http\Controllers\Admin\UserManagementController::class);
+        Route::resource('divisions', \App\Http\Controllers\Admin\DivisionManagementController::class);
+    });
 });
 
 require __DIR__.'/auth.php';

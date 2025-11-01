@@ -57,11 +57,8 @@ class TravelNotification extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            Attachment::fromStorageDisk('public', $this->excelPath)
-                ->as('出張申請書_' . $this->travelRequest->user->user_code . '_' . $this->travelRequest->departure_date->format('Ymd') . '.xlsx')
-                ->withMime('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
-        ];
+        // Excelファイルは添付せず、ポータル上でダウンロードできるようにする
+        return [];
     }
 }
 

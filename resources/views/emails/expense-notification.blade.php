@@ -42,7 +42,7 @@
         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
             <p style="color: #6b7280; font-size: 14px;">
                 このメールは、mec-portalの経費精算システムから自動送信されました。<br>
-                詳細は添付のExcelファイルをご確認ください。
+                詳細なExcelファイルはポータルサイトの承認待ち一覧からダウンロードしてください。
             </p>
         </div>
     </div>

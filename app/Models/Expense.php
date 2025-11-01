@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\WorkflowApproval;
 
 class Expense extends Model
 {
@@ -27,6 +28,7 @@ class Expense extends Model
         'route_to',
         'transportation_type',
         'receipt_path',
+        'excel_path',
         'status',
     ];
 
@@ -66,6 +68,27 @@ class Expense extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Expense::class, 'parent_id');
+    }
+
+    /**
+     * 承認フロー
+     */
+    public function workflowApprovals(): HasMany
+    {
+        return $this->hasMany(WorkflowApproval::class, 'request_id')
+            ->where('request_type', 'expense')
+            ->orderBy('approval_order');
+    }
+
+    /**
+     * 現在の承認待ち
+     */
+    public function pendingApproval(): ?WorkflowApproval
+    {
+        return $this->workflowApprovals()
+            ->where('status', WorkflowApproval::STATUS_PENDING)
+            ->orderBy('approval_order')
+            ->first();
     }
 
     /**

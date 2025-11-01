@@ -1,7 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('経費申請編集') }}
+            @if($expense->status === \App\Models\Expense::STATUS_REJECTED)
+                {{ __('経費申請再申請') }}
+            @else
+                {{ __('経費申請編集') }}
+            @endif
         </h2>
     </x-slot>
 
@@ -112,7 +116,11 @@
                             </a>
                             <button type="submit" 
                                     class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors">
-                                更新する
+                                @if($expense->status === \App\Models\Expense::STATUS_REJECTED)
+                                    再申請する
+                                @else
+                                    更新する
+                                @endif
                             </button>
                         </div>
                     </form>

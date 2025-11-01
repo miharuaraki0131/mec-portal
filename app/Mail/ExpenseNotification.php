@@ -28,8 +28,9 @@ class ExpenseNotification extends Mailable
      */
     public function envelope(): Envelope
     {
+        $requestType = $this->expense->isTransportation() ? '交通費申請' : '経費申請';
         return new Envelope(
-            subject: '【経費申請】' . $this->expense->user->name . '様からの申請',
+            subject: '【mec-portal】新しい' . $requestType . 'が届きました',
         );
     }
 
@@ -52,15 +53,7 @@ class ExpenseNotification extends Mailable
      */
     public function attachments(): array
     {
-        $filePath = storage_path('app/public/' . $this->excelPath);
-        
-        if (!file_exists($filePath)) {
-            return [];
-        }
-
-        return [
-            Attachment::fromPath($filePath)
-                ->as('経費申請書_' . $this->expense->user->user_code . '_' . $this->expense->date->format('Ymd') . '.xlsx')
-        ];
+        // Excelファイルは添付せず、ポータル上でダウンロードできるようにする
+        return [];
     }
 }

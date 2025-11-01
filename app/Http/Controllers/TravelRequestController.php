@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TravelRequest;
 use App\Models\TravelExpense;
 use App\Models\Division;
+use App\Models\User;
+use App\Models\WorkflowApproval;
 use App\Mail\TravelNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -96,11 +98,14 @@ class TravelRequestController extends Controller
         // 小計と精算金額を計算
         $travelRequest->calculateSubtotal();
 
-        // Excel生成とメール送信
+        // 承認フローを作成（部署責任者 → 業務部）
+        $this->createTravelApprovalFlow($travelRequest);
+
+        // Excel生成とメール送信（通知のみ、Excelは添付しない）
         $this->generateExcelAndSendEmail($travelRequest);
 
         return redirect()->route('travel-requests.index')
-            ->with('success', '出張申請を送信しました。業務部にExcelファイルを送信しました。');
+            ->with('success', '出張申請を送信しました。業務部に通知を送信しました。');
     }
 
     /**
@@ -110,7 +115,7 @@ class TravelRequestController extends Controller
     {
         $this->authorize('view', $travelRequest);
         
-        $travelRequest->load(['user', 'travelExpenses']);
+        $travelRequest->load(['user', 'travelExpenses', 'workflowApprovals.approver']);
         
         return view('travel-requests.show', compact('travelRequest'));
     }
@@ -317,11 +322,11 @@ class TravelRequestController extends Controller
     }
 
     /**
-     * 業務部にメール送信
+     * 業務部にメール送信（通知のみ）
      */
-    private function sendEmailToBusinessDivision(TravelRequest $travelRequest, string $excelPath): void
+    private function sendEmailToBusinessDivision(TravelRequest $travelRequest): void
     {
-        $businessDivision = Division::where('name', '業務部')->first();
+        $businessDivision = Division::where('name', '業務部')->whereNull('parent_id')->first();
         if ($businessDivision) {
             $recipients = $businessDivision->users->pluck('email')->toArray();
             
@@ -334,9 +339,57 @@ class TravelRequestController extends Controller
             $recipients = array_unique($recipients);
 
             if (!empty($recipients)) {
-                Mail::to($recipients)->send(new TravelNotification($travelRequest, $excelPath));
+                Mail::to($recipients)->send(new TravelNotification($travelRequest, $travelRequest->excel_path ?? ''));
             }
         }
+    }
+
+    /**
+     * Excelファイルをダウンロード
+     */
+    public function downloadExcel(TravelRequest $travelRequest)
+    {
+        $this->authorize('view', $travelRequest);
+
+        // Excelファイルが存在しない場合は再生成
+        if (!$travelRequest->excel_path || !Storage::disk('public')->exists($travelRequest->excel_path)) {
+            $travelRequest->excel_path = $this->generateExcel($travelRequest);
+            $travelRequest->save();
+        }
+
+        $filePath = storage_path('app/public/' . $travelRequest->excel_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'ファイルが見つかりません。');
+        }
+
+        $fileName = '出張申請書_' . $travelRequest->user->user_code . '_' . $travelRequest->departure_date->format('Ymd') . '.xlsx';
+
+        return response()->download($filePath, $fileName);
+    }
+
+    /**
+     * 出張申請の承認フローを作成（部署責任者 → 業務部）
+     */
+    private function createTravelApprovalFlow(TravelRequest $travelRequest): void
+    {
+        $user = $travelRequest->user;
+        
+        // 第1ステップ：部署責任者
+        if ($user->division && $user->division->manager_id) {
+            WorkflowApproval::create([
+                'request_type' => 'travel',
+                'request_id' => $travelRequest->id,
+                'applicant_id' => $travelRequest->user_id,
+                'approval_order' => 1,
+                'approver_id' => $user->division->manager_id,
+                'is_final_approval' => 0,
+                'status' => WorkflowApproval::STATUS_PENDING,
+            ]);
+        }
+
+        // 第2ステップ：業務部（最終承認）- 部署責任者承認後に作成されるため、ここでは作成しない
+        // ApprovalControllerのcreateNextApprovalStep()で作成される
     }
 }
 

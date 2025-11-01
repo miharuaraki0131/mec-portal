@@ -42,13 +42,10 @@ class ExpensePolicy
      */
     public function update(User $user, Expense $expense): bool
     {
-        // 管理者は全経費を編集可能
-        if ($user->role === 1) {
-            return true;
-        }
-        
-        // 一般ユーザー・マネージャーは申請中の自分の経費のみ編集可能
-        return $expense->user_id === $user->id && $expense->status === Expense::STATUS_PENDING;
+        // 申請者本人のみ、申請中または差し戻し状態の経費を編集可能（再申請可能）
+        // 管理者・業務部・部署責任者も申請後の編集は不可（改ざん防止）
+        return $expense->user_id === $user->id && 
+               ($expense->status === Expense::STATUS_PENDING || $expense->status === Expense::STATUS_REJECTED);
     }
 
     /**
@@ -56,12 +53,9 @@ class ExpensePolicy
      */
     public function delete(User $user, Expense $expense): bool
     {
-        // 管理者は全経費を削除可能
-        if ($user->role === 1) {
-            return true;
-        }
-        
-        // 一般ユーザー・マネージャーは申請中の自分の経費のみ削除可能
-        return $expense->user_id === $user->id && $expense->status === Expense::STATUS_PENDING;
+        // 申請者本人のみ、申請中または差し戻し状態の経費を削除可能
+        // 管理者・業務部・部署責任者も申請後の削除は不可（改ざん防止）
+        return $expense->user_id === $user->id && 
+               ($expense->status === Expense::STATUS_PENDING || $expense->status === Expense::STATUS_REJECTED);
     }
 }

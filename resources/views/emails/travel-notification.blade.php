@@ -52,7 +52,7 @@
             </table>
         </div>
         
-        <p style="margin-top: 20px;">詳細は添付のExcelファイルをご確認ください。</p>
+        <p style="margin-top: 20px;">詳細なExcelファイルはポータルサイトの承認待ち一覧からダウンロードしてください。</p>
         
         <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E5E7EB; color: #6B7280; font-size: 12px;">
             このメールは自動送信されています。<br>

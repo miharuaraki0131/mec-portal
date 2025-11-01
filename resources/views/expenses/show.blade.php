@@ -90,12 +90,52 @@
                         </div>
                     @endif
 
+                    <!-- 承認履歴 -->
+                    @if($expense->workflowApprovals && $expense->workflowApprovals->count() > 0)
+                        <div class="mb-6 pb-4 border-b">
+                            <h3 class="text-sm font-medium text-gray-500 mb-4">承認履歴</h3>
+                            <div class="space-y-3">
+                                @foreach($expense->workflowApprovals as $approval)
+                                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="text-sm font-medium text-gray-900">{{ $approval->approver->name ?? '未設定' }}</span>
+                                                <span class="bg-{{ $approval->status_color }}-100 text-{{ $approval->status_color }}-800 text-xs font-semibold px-2 py-1 rounded">
+                                                    {{ $approval->status_label }}
+                                                </span>
+                                            </div>
+                                            @if($approval->comment)
+                                                <p class="text-sm text-gray-600">{{ $approval->comment }}</p>
+                                            @endif
+                                            @if($approval->approved_at)
+                                                <p class="text-xs text-gray-500 mt-1">{{ $approval->approved_at->format('Y年m月d日 H:i') }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- アクションボタン -->
-                    @can('update', $expense)
-                        <div class="flex gap-3 pt-4 border-t">
+                    <div class="flex gap-3 pt-4 border-t">
+                        @can('view', $expense)
+                            <a href="{{ route('expenses.download-excel', $expense->id) }}" 
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Excelをダウンロード
+                            </a>
+                        @endcan
+                        @can('update', $expense)
                             <a href="{{ route('expenses.edit', $expense->id) }}" 
                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                編集
+                                @if($expense->status === \App\Models\Expense::STATUS_REJECTED)
+                                    再申請
+                                @else
+                                    編集
+                                @endif
                             </a>
                             <form method="POST" action="{{ route('expenses.destroy', $expense->id) }}" 
                                   onsubmit="return confirm('この経費申請を削除しますか？');">
@@ -106,8 +146,8 @@
                                     削除
                                 </button>
                             </form>
-                        </div>
-                    @endcan
+                        @endcan
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expense;
 use App\Models\Division;
 use App\Models\User;
+use App\Models\WorkflowApproval;
 use App\Mail\ExpenseNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -103,11 +104,14 @@ class ExpenseController extends Controller
             'status' => Expense::STATUS_PENDING,
         ]);
 
-        // Excel生成とメール送信
+        // 承認フローを作成（業務部）
+        $this->createExpenseApprovalFlow($expense);
+
+        // Excel生成とメール送信（通知のみ、Excelは添付しない）
         $this->generateExcelAndSendEmail($expense);
 
         return redirect()->route('expenses.index')
-            ->with('success', '経費申請を送信しました。業務部にExcelファイルを送信しました。');
+            ->with('success', '経費申請を送信しました。業務部に通知を送信しました。');
     }
 
     /**
@@ -167,11 +171,14 @@ class ExpenseController extends Controller
         // 親レコードの合計金額を更新
         $parentExpense->update(['amount' => $totalAmount]);
 
-        // Excel生成とメール送信
+        // 承認フローを作成（業務部）
+        $this->createExpenseApprovalFlow($parentExpense);
+
+        // Excel生成とメール送信（通知のみ、Excelは添付しない）
         $this->generateExcelAndSendEmail($parentExpense);
 
         return redirect()->route('expenses.index')
-            ->with('success', '交通費申請を送信しました。業務部にExcelファイルを送信しました。');
+            ->with('success', '交通費申請を送信しました。業務部に通知を送信しました。');
     }
 
     /**
@@ -185,6 +192,9 @@ class ExpenseController extends Controller
         if ($expense->isTransportation()) {
             $expense->load('children');
         }
+        
+        // 承認履歴も読み込む
+        $expense->load('workflowApprovals.approver');
         
         return view('expenses.show', compact('expense'));
     }
@@ -226,7 +236,27 @@ class ExpenseController extends Controller
             $validated['receipt_path'] = $file->storeAs('receipts', $fileName, 'public');
         }
 
+        // 差し戻し状態の場合は再申請として扱う
+        $isReapplication = $expense->status === Expense::STATUS_REJECTED;
+        
+        $validated['status'] = Expense::STATUS_PENDING; // 再申請の場合は申請中に戻す
+
         $expense->update($validated);
+
+        // 差し戻し後の再申請の場合、既存の承認フローを削除して新しく作成
+        if ($isReapplication) {
+            // 既存の承認フローを削除
+            $expense->workflowApprovals()->delete();
+            
+            // 新しい承認フローを作成
+            $this->createExpenseApprovalFlow($expense);
+            
+            // Excelを再生成してメール送信
+            $this->generateExcelAndSendEmail($expense);
+            
+            return redirect()->route('expenses.show', $expense)
+                ->with('success', '経費申請を再申請しました。業務部に通知を送信しました。');
+        }
 
         return redirect()->route('expenses.show', $expense)
             ->with('success', '経費申請を更新しました。');
@@ -255,11 +285,12 @@ class ExpenseController extends Controller
      */
     private function generateExcelAndSendEmail(Expense $expense): void
     {
-        // Excelファイルを生成
+        // Excelファイルを生成して保存
         $excelPath = $this->generateExcel($expense);
+        $expense->update(['excel_path' => $excelPath]);
 
-        // 業務部全員にメール送信
-        $this->sendEmailToBusinessDivision($expense, $excelPath);
+        // 業務部全員にメール送信（通知のみ、Excelは添付しない）
+        $this->sendEmailToBusinessDivision($expense);
     }
 
     /**
@@ -530,9 +561,9 @@ class ExpenseController extends Controller
     }
 
     /**
-     * 業務部全員にメール送信
+     * 業務部全員にメール送信（通知のみ）
      */
-    private function sendEmailToBusinessDivision(Expense $expense, string $excelPath): void
+    private function sendEmailToBusinessDivision(Expense $expense): void
     {
         // 「業務部」を取得（親部署）
         $businessDivision = Division::where('name', '業務部')->whereNull('parent_id')->first();
@@ -559,11 +590,68 @@ class ExpenseController extends Controller
             return;
         }
 
-        // 全員にメール送信
+        // 全員にメール送信（Excelは添付しない）
         foreach ($users as $user) {
             if ($user->email) {
-                Mail::to($user->email)->send(new ExpenseNotification($expense, $excelPath));
+                Mail::to($user->email)->send(new ExpenseNotification($expense, $expense->excel_path ?? ''));
             }
+        }
+    }
+
+    /**
+     * Excelファイルをダウンロード
+     */
+    public function downloadExcel(Expense $expense)
+    {
+        $this->authorize('view', $expense);
+
+        // Excelファイルが存在しない場合は再生成
+        if (!$expense->excel_path || !Storage::disk('public')->exists($expense->excel_path)) {
+            $expense->excel_path = $this->generateExcel($expense);
+            $expense->save();
+        }
+
+        $filePath = storage_path('app/public/' . $expense->excel_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'ファイルが見つかりません。');
+        }
+
+        $fileName = $expense->isTransportation() 
+            ? '交通費請求明細書_' . $expense->user->user_code . '_' . $expense->period_from->format('Ymd') . '.xlsx'
+            : '経費申請書_' . $expense->user->user_code . '_' . $expense->date->format('Ymd') . '.xlsx';
+
+        return response()->download($filePath, $fileName);
+    }
+
+    /**
+     * 経費申請の承認フローを作成（業務部）
+     */
+    private function createExpenseApprovalFlow(Expense $expense): void
+    {
+        $businessDivision = Division::where('name', '業務部')->whereNull('parent_id')->first();
+        if (!$businessDivision) {
+            return;
+        }
+
+        // 業務部のユーザー全員に承認権限を付与
+        $businessUsers = User::where('delete_flg', 0)
+            ->where(function ($query) use ($businessDivision) {
+                $query->where('division_id', $businessDivision->id)
+                    ->orWhereIn('division_id', $businessDivision->children->pluck('id'));
+            })
+            ->get();
+
+        foreach ($businessUsers as $businessUser) {
+            WorkflowApproval::create([
+                'request_type' => 'expense',
+                'request_id' => $expense->id,
+                'applicant_id' => $expense->user_id,
+                'approval_order' => 1,
+                'approver_id' => $businessUser->id,
+                'is_final_approval' => 1,
+                'status' => WorkflowApproval::STATUS_PENDING,
+            ]);
         }
     }
 }

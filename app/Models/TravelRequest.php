@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\WorkflowApproval;
 
 class TravelRequest extends Model
 {
@@ -24,6 +25,7 @@ class TravelRequest extends Model
         'settlement_type',
         'status',
         'approved_at',
+        'excel_path',
     ];
 
     protected $casts = [
@@ -52,6 +54,27 @@ class TravelRequest extends Model
     public function travelExpenses(): HasMany
     {
         return $this->hasMany(TravelExpense::class);
+    }
+
+    /**
+     * 承認フロー
+     */
+    public function workflowApprovals(): HasMany
+    {
+        return $this->hasMany(WorkflowApproval::class, 'request_id')
+            ->where('request_type', 'travel')
+            ->orderBy('approval_order');
+    }
+
+    /**
+     * 現在の承認待ち
+     */
+    public function pendingApproval(): ?WorkflowApproval
+    {
+        return $this->workflowApprovals()
+            ->where('status', WorkflowApproval::STATUS_PENDING)
+            ->orderBy('approval_order')
+            ->first();
     }
 
     public function getStatusLabelAttribute(): string

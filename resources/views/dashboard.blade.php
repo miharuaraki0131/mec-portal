@@ -8,22 +8,21 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- FAQ検索フォーム -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <a href="{{ route('faqs.index') }}" class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6 hover:shadow-md transition-shadow block">
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">FAQ検索</h3>
-                    <form method="GET" action="{{ route('faqs.index') }}" class="flex gap-2">
-                        <input type="text" 
-                               name="search" 
-                               placeholder="よくある質問を検索..."
-                               class="flex-1 rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                               value="{{ request('search') }}">
-                        <button type="submit" 
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
-                            検索
-                        </button>
-                    </form>
+                    <div class="flex gap-2">
+                        <div class="flex-1 rounded-lg border-gray-300 bg-gray-50 px-4 py-2 text-gray-500 cursor-pointer">
+                            よくある質問を検索...
+                        </div>
+                        <div class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium flex items-center">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </a>
 
             <!-- 社内機能カード -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
@@ -102,20 +101,38 @@
                     </div>
                 </a>
 
-                <!-- FAQ -->
-                <a href="{{ route('faqs.index') }}" class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">
-                    <div class="p-6">
-                        <div class="flex items-center mb-3">
-                            <div class="flex-shrink-0 bg-yellow-100 rounded-lg p-3">
-                                <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                @if(Auth::user()->role === 1)
+                    <!-- マスタ管理（管理者のみ） -->
+                    <a href="{{ route('admin.masters.index') }}" class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">
+                        <div class="p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="flex-shrink-0 bg-red-100 rounded-lg p-3">
+                                    <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="ml-3 text-lg font-semibold text-gray-900">マスタ管理</h3>
                             </div>
-                            <h3 class="ml-3 text-lg font-semibold text-gray-900">FAQ</h3>
+                            <p class="text-gray-600 text-sm">ユーザー・部署・各種マスタ管理</p>
                         </div>
-                        <p class="text-gray-600 text-sm">よくある質問を検索</p>
-                    </div>
-                </a>
+                    </a>
+                @else
+                    <!-- FAQ -->
+                    <a href="{{ route('faqs.index') }}" class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">
+                        <div class="p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="flex-shrink-0 bg-yellow-100 rounded-lg p-3">
+                                    <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="ml-3 text-lg font-semibold text-gray-900">FAQ</h3>
+                            </div>
+                            <p class="text-gray-600 text-sm">よくある質問を検索</p>
+                        </div>
+                    </a>
+                @endif
             </div>
 
             <!-- お知らせ一覧 -->

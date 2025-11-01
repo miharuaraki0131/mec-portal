@@ -80,6 +80,27 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        @php
+                            $isBusinessDivision = false;
+                            $isManager = Auth::user()->role === 2;
+                            $businessDivision = \App\Models\Division::where('name', '業務部')->whereNull('parent_id')->first();
+                            if ($businessDivision) {
+                                $isBusinessDivision = Auth::user()->division_id === $businessDivision->id || 
+                                                       Auth::user()->division_id === $businessDivision->children->pluck('id')->first();
+                            }
+                        @endphp
+                        @if($isBusinessDivision || $isManager)
+                            <x-dropdown-link :href="route('approvals.index')">
+                                {{ __('承認待ち') }}
+                            </x-dropdown-link>
+                        @endif
+
+                        @if(Auth::user()->role === 1)
+                            <x-dropdown-link :href="route('admin.masters.index')">
+                                {{ __('マスタ管理') }}
+                            </x-dropdown-link>
+                        @endif
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -141,6 +162,27 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+
+                @php
+                    $isBusinessDivision = false;
+                    $isManager = Auth::user()->role === 2;
+                    $businessDivision = \App\Models\Division::where('name', '業務部')->whereNull('parent_id')->first();
+                    if ($businessDivision) {
+                        $isBusinessDivision = Auth::user()->division_id === $businessDivision->id || 
+                                               Auth::user()->division_id === $businessDivision->children->pluck('id')->first();
+                    }
+                @endphp
+                @if($isBusinessDivision || $isManager)
+                    <x-responsive-nav-link :href="route('approvals.index')">
+                        {{ __('承認待ち') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                @if(Auth::user()->role === 1)
+                    <x-responsive-nav-link :href="route('admin.masters.index')">
+                        {{ __('マスタ管理') }}
+                    </x-responsive-nav-link>
+                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
