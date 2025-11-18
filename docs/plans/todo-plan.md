@@ -1,94 +1,126 @@
-# ToDo 機能 仕様書（todo-plan.md）
+# 📄 todo-plan.md
+# ToDo（My ToDo）機能 設計仕様書
 
-## 1. 概要
-本仕様書は「個人向けToDo管理機能」の仕様を定義する。  
-mec-portal 内の1機能として開発し、AI（Cursor/ChatGPT）が本仕様を参照して実装を行う。
-
----
-
-## 2. 機能目的
-- シンプルな個人ToDo管理を提供する  
-- ステータス管理（未完了/完了）による日次業務の可視化  
-- 将来的にダッシュボードや通知機能と連携できる構造を持つ
+※ 本仕様は「AI が解釈しながら実装すること」を前提とした **意図ベース設計（Intent-driven）** の仕様書です。
 
 ---
 
-## 3. 画面仕様
+# 1. 概要（Purpose）
 
-### ◆ 一覧 `/todo`
-- タスク一覧（テーブル表示）
-- 新規追加ボタン
-- 編集ボタン
-- 削除ボタン
-- 完了 / 未完了 表示
-- 完了チェックボタン（クリックで即反映）
-- 並び替え（id DESC でOK）
+ポータルサイトに、ログインユーザーが **自分専用のタスク** を管理できる
+「個人ToDo（My ToDo）」機能を追加する。
+
+**登録・編集・削除・完了管理（CRUD）** を最小要件とし、
+画面構成やデータ構造の詳細は **AI が最適解を判断して設計してよい**。
 
 ---
 
-## 4. 新規作成 `/todo/create`
-入力項目：
-- title（必須）
-- description（任意）
-- due_date（任意）
+# 2. 基本要件（Minimal Requirements）
+
+## ✔ 1. タスクの CRUD ができる
+
+* 作成
+* 編集
+* 削除
+* 一覧表示
+
+## ✔ 2. タスクはログインユーザー単位で管理
+
+* 認可必須（他ユーザーの閲覧・更新は不可）
+* user_id の持ち方など DB構造は **AI に任せる**
+
+## ✔ 3. タスクが最低限持つべき情報
+
+* タイトル（必須）
+* 詳細（任意）
+* 完了/未完了（必須）
+* 期限日（任意）
+* 優先度（任意）
+
+※ 優先度の型・扱い（enum / tinyint / badge / color）は **AI に任せる**
+
+## ✔ 4. ダッシュボードへのカード追加
+
+* 「タスク一覧ページへの遷移カード」を追加する
+  （内容・見た目・集計有無などは AI の判断）
+
+## ✔ 5. サイドバーへ ToDo メニューを追加
+
+* 既存 UI に自然に溶け込むよう AI が判断して配置する
 
 ---
 
-## 5. 編集 `/todo/{id}/edit`
-- 既存データをフォームに表示
-- 更新ボタン
+# 3. 画面仕様（UIの詳細は AI に任せる）
+
+## ◆ 一覧画面
+
+* ログインユーザーのタスクのみ表示
+* 完了/未完了の切り替えができる（即時反映）
+* フィルタ、ソートは必要に応じて AI が実装判断
+
+## ◆ 新規登録画面
+
+* タイトル必須
+* 詳細、期限、優先度などは AI が最適に配置し実装
+
+## ◆ 編集画面
+
+* 自分のタスクのみ編集できる
 
 ---
 
-## 6. モデル仕様（ToDo）
+# 4. AI に任せる部分（Intent）
 
-| 項目 | 型 | 必須 | 説明 |
-|------|------|------|------|
-| id | big integer | ○ | PK |
-| title | string(100) | ○ | タスク名 |
-| description | text | - | 詳細 |
-| status | tinyint | ○ | 0=未完了 / 1=完了 |
-| due_date | date | - | 期限日 |
-| created_at | timestamp | ○ | 自動 |
-| updated_at | timestamp | ○ | 自動 |
+本仕様は **“最低限の意図” を定義し、詳細は AI に委任する**。
 
----
+任せてよい項目：
 
-## 7. バリデーション
-| 項目 | ルール |
-|------|-------|
-| title | required / max:100 |
-| description | nullable |
-| status | boolean |
-| due_date | nullable / date |
+* DBスキーマ（カラム名・型・enum の扱い）
+* バリデーションルール
+* フィルタ・ソートなど一覧機能の強化
+* 優先度の実装方法（色分け / バッジ / enum）
+* UI デザイン・レイアウト（テーブル/カード）
+* ダッシュボードカードのデザイン
+* 認可（Policy / Gate）の具体実装
+* Blade のレイアウト構成
+* JS による完了状態の即時切替処理
 
 ---
 
-## 8. ルーティング
-Resource Controller を利用：
+# 5. 開発ルール（AIが従う前提）
 
-GET /todo
-GET /todo/create
-POST /todo
-GET /todo/{id}/edit
-PUT /todo/{id}
-DELETE /todo/{id}
+* Laravel の標準慣習に従うこと
+* Breeze の UI ガイドラインに沿う
+* mec-portal の既存レイアウト構造へ自然に統合する
+* コード生成内容は **必ず `docs/exec.md` に記録**
 
-
-## 9. Migration 仕様
-- id: bigIncrements
-- title: string(100)
-- description: text nullable
-- status: tinyInteger default 0
-- due_date: date nullable
-- timestamps
+  * 作成 / 変更したファイル一覧
+  * 実装ログ（migration / policy / routes / view）
+  * 実装方針の要約
 
 ---
 
-## 10. AIへの依頼方法
-Cursor または ChatGPT へ次のように依頼する：
+# 6. 実装対象（AIが生成するもの）
 
-この仕様書（docs/plans/todo-plan.md）をもとに  、mec-portal に「個人ToDo（My ToDo）」機能を追加してください。
+* Migration（todos テーブル）
+* Model（Todo）
+* Controller（TodoController）
+* Routes（RESTful 形式）
+* Blade テンプレート（一覧 / 新規 / 編集）
+* 認可（自分のタスクのみ操作可能）
+* ダッシュボードへのカード追加
+* サイドバーのメニュー追加
+* 必要な JS 処理（完了/未完了の切り替え）
+
+---
+
+# 7. AI への依頼文（実行用）
+
+以下を Cursor / ChatGPT に渡すと、実装が開始される。
+
+```
+この仕様書をもとに、mec-portal に「個人ToDo（My ToDo）」機能を追加してください。
+
 仕様は意図（Purpose）と必須要件（Minimal Requirements）のみを定義しており、
 画面構成・DBスキーマ・バリデーション・ルーティング・UIの詳細は
 AI の判断で最適なものを設計してください。
@@ -104,6 +136,6 @@ AI の判断で最適なものを設計してください。
 - サイドバーにメニュー追加
 
 実装した内容とファイルパス・編集箇所は docs/exec.md に追記してください。
+```
 
 ---
-
