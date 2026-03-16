@@ -36,22 +36,7 @@
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">連絡先</h3>
                         </div>
                         <div class="text-gray-600 text-base space-y-3 mt-4">
-                            <div>
-                                <p class="font-medium text-gray-700 mb-1">本社</p>
-                                <p class="text-xs">〒532-0011</p>
-                                <p class="text-xs">大阪府大阪市淀川区西中島2丁目12番11号</p>
-                                <p class="text-xs">川久センタービル2階</p>
-                                <p class="text-xs mt-1">TEL: <a href="tel:06-6305-5301" class="text-indigo-600 hover:underline">06-6305-5301</a></p>
-                                <p class="text-xs">FAX: 06-6302-4453</p>
-                            </div>
-                            <div class="pt-2 border-t">
-                                <p class="font-medium text-gray-700 mb-1">東京事業所</p>
-                                <p class="text-xs">〒101-0041</p>
-                                <p class="text-xs">東京都千代田区神田須田町1丁目16番5号</p>
-                                <p class="text-xs">ヒューリック神田ビル6階</p>
-                                <p class="text-xs mt-1">TEL: <a href="tel:03-5244-4552" class="text-indigo-600 hover:underline">03-5244-4552</a></p>
-                                <p class="text-xs">FAX: 03-5244-4556</p>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -68,14 +53,14 @@
                             <h3 class="ml-3 text-lg font-semibold text-gray-900">各種リンク</h3>
                         </div>
                         <div class="text-gray-600 text-base space-y-2 mt-4">
-                            <a href="https://www.n-mec.com/" target="_blank" rel="noopener noreferrer" class="block hover:text-indigo-600 transition-colors">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="block hover:text-indigo-600 transition-colors">
                                 <span class="font-medium">会社ホームページ</span>
                                 <svg class="inline-block w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </a>
                             <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" class="block hover:text-indigo-600 transition-colors">
-                                <span class="font-medium">社内ドライブ</span>
+                                <span class="font-medium">ドライブ</span>
                                 <svg class="inline-block w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
